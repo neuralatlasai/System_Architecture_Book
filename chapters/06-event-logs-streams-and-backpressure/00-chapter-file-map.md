@@ -11,12 +11,12 @@ Each file is a self-contained research note: an abstract stating the claim, a fo
 | Order | File | Architecture Decision Produced |
 |---:|---|---|
 | 1 | [README.md](README.md) | Chapter thesis, source corpus, and completion gate |
-| 2 | [01-the-log-abstraction-and-topic-design.md](01-the-log-abstraction-and-topic-design.md) | What the log buys, topic/partition design, key choice as ordering scope |
+| 2 | [01-the-log-abstraction-and-topic-design.md](01-the-log-abstraction-and-topic-design.md) | What the log buys, topic/partition design, key choice as ordering scope, log-vs-queue admission |
 | 3 | [02-delivery-semantics-and-idempotent-consumption.md](02-delivery-semantics-and-idempotent-consumption.md) | End-to-end delivery guarantees; idempotent producers, transactions, idempotent consumers |
 | 4 | [03-consumer-groups-lag-and-rebalancing.md](03-consumer-groups-lag-and-rebalancing.md) | Group protocol, assignment, rebalance cost, lag as the master SLI |
 | 5 | [04-backpressure-and-flow-control.md](04-backpressure-and-flow-control.md) | Bounded buffers everywhere, credit/pull flow control, producer admission |
 | 6 | [05-poison-events-dlq-and-replay.md](05-poison-events-dlq-and-replay.md) | Poison taxonomy, retry topics, DLQ ownership, replay discipline |
-| 7 | [06-stream-processing-and-stateful-computation.md](06-stream-processing-and-stateful-computation.md) | Stateful operators, checkpointing, event time, watermarks, exactly-once state |
+| 7 | [06-stream-processing-and-stateful-computation.md](06-stream-processing-and-stateful-computation.md) | Stateful operators, checkpointing, event time, watermarks, exactly-once state, streams feeding models and indexes |
 | 8 | [07-retention-compaction-and-the-log-as-storage.md](07-retention-compaction-and-the-log-as-storage.md) | Retention as contract, compaction semantics, tiered storage, event-sourcing caution |
 | 9 | [08-event-schema-governance-and-evolution.md](08-event-schema-governance-and-evolution.md) | Registry compatibility modes, event versioning, cross-team contracts |
 | 10 | [09-failure-modes-and-degradation.md](09-failure-modes-and-degradation.md) | Rebalance storms, lag runaway, duplicate storms, retention expiry, DLQ overflow |
