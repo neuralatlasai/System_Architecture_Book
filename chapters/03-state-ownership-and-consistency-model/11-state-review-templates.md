@@ -1,5 +1,7 @@
 # State Review Templates
 
+![Figure: State review dossier compiler](images/11-state-review-dossier.png)
+
 ## Abstract
 
 This file collects the executable artifacts of Chapter 03: the state inventory with ownership tuples, the per-read-path consistency table, the invariant-to-isolation mapping, the coordination register, the derivation DAG manifest, lifecycle and retention schedules, migration state, recovery contracts, and the drill checklist. Every field is defined and justified in files 01–10; this file adds no new policy. A blank field is a finding, not a formatting choice — and in this chapter more than any other, a blank field is usually a data-loss or data-leak incident with a start date not yet chosen.
