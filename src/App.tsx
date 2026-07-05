@@ -233,11 +233,11 @@ function BookReader({ book }: BookReaderProps): JSX.Element {
       const target = sectionId ? document.getElementById(sectionId) : undefined;
 
       if (target) {
-        target.scrollIntoView({ block: "start" });
+        target.scrollIntoView({ block: "start", behavior: "smooth" });
         return;
       }
 
-      window.scrollTo({ top: 0, behavior: "instant" });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     });
   }, [selectedDocumentId, pendingSectionId]);
 
@@ -339,12 +339,12 @@ function BookReader({ book }: BookReaderProps): JSX.Element {
             </select>
           </div>
 
-          <article id="article" className="article-frame">
+          <article key={selectedDocument.id} id="article" className="article-frame">
             <ArticleHeader document={selectedDocument} chapter={selectedChapter} onCopySourcePath={copySourcePath} copied={copied} />
 
             {selectedDocument.coverImage ? (
               <figure className="article-hero-media">
-                <img alt="" decoding="async" loading="eager" src={selectedDocument.coverImage} />
+                <img alt={`${selectedDocument.title} visual overview`} decoding="async" loading="eager" src={selectedDocument.coverImage} />
               </figure>
             ) : null}
 

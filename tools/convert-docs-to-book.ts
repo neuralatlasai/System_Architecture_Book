@@ -132,6 +132,51 @@ function firstHeading(markdownText: string, fallback: string): string {
   return match ? match[1].trim() : fallback;
 }
 
+function stripLeadingDocumentChrome(markdownText: string): string {
+  const withoutByteOrderMark = markdownText.replace(/^\uFEFF?/, "");
+  const withoutTitle = withoutByteOrderMark.replace(/^#\s+.+(?:\r?\n|$)/, "");
+
+  return withoutTitle.replace(/^(?:[ \t]*\r?\n)*!\[[^\]\r\n]*]\([^)]+\)[ \t]*(?:\r?\n|$)/, "").trimStart();
+}
+
+function parseMarkdownImageDestination(rawDestination: string): string {
+  const trimmedDestination = rawDestination.trim();
+
+  if (trimmedDestination.startsWith("<")) {
+    const closingIndex = trimmedDestination.indexOf(">");
+    return closingIndex > 1 ? trimmedDestination.slice(1, closingIndex) : trimmedDestination;
+  }
+
+  const whitespaceIndex = trimmedDestination.search(/\s/);
+  return whitespaceIndex >= 0 ? trimmedDestination.slice(0, whitespaceIndex) : trimmedDestination;
+}
+
+function leadingCoverImage(markdownText: string, sourcePath: string): string | undefined {
+  const withoutByteOrderMark = markdownText.replace(/^\uFEFF?/, "");
+  const withoutTitle = withoutByteOrderMark.replace(/^#\s+.+(?:\r?\n|$)/, "");
+  const imageMatch = withoutTitle.match(/^(?:[ \t]*\r?\n)*!\[[^\]\r\n]*]\(([^)]+)\)/);
+
+  if (!imageMatch) {
+    return undefined;
+  }
+
+  const rawSrc = parseMarkdownImageDestination(imageMatch[1]);
+
+  if (rawSrc.length === 0) {
+    return undefined;
+  }
+
+  if (isExternalUrl(rawSrc)) {
+    return rawSrc;
+  }
+
+  const { pathname, suffix } = splitUrl(rawSrc);
+  const resolvedPath = path.resolve(path.dirname(sourcePath), decodeURIComponent(pathname));
+  const publicPath = copyAsset(resolvedPath);
+
+  return publicPath.length > 0 ? `${publicPath}${suffix}` : undefined;
+}
+
 function firstMeaningfulParagraph(markdownText: string): string {
   const abstractMatch = markdownText.match(/^##\s+Abstract\s*\n+([\s\S]*?)(?:\n##\s+|\n#\s+|$)/im);
   const source = abstractMatch ? abstractMatch[1] : markdownText;
@@ -535,13 +580,15 @@ function buildContent(): BookContent {
     const fallbackTitle = sourceDocument.kind === "book-overview" ? "System Architecture Book" : sourceDocument.relativePath;
     const title = firstHeading(markdownText, fallbackTitle);
     const wordCount = countWords(markdownText);
+    const coverImage = leadingCoverImage(markdownText, sourceDocument.sourcePath);
+    const renderedMarkdownText = stripLeadingDocumentChrome(markdownText);
     const renderEnvironment: RenderEnvironment = {
       sourcePath: sourceDocument.sourcePath,
       headings: [],
       images: [],
       headingCounts: new Map(),
     };
-    const html = sanitizeRenderedHtml(markdown.render(markdownText, renderEnvironment));
+    const html = sanitizeRenderedHtml(markdown.render(renderedMarkdownText, renderEnvironment));
     const chapterEntry =
       sourceDocument.chapterNumber === undefined ? undefined : chapterEntryByNumber.get(sourceDocument.chapterNumber);
     const plainText = stripMarkdown(markdownText);
@@ -559,7 +606,7 @@ function buildContent(): BookContent {
       readingMinutes: estimateReadingMinutes(wordCount),
       wordCount,
       headings: renderEnvironment.headings,
-      coverImage: renderEnvironment.images[0],
+      coverImage,
       html,
       searchText: normalizeSearchText(`${title} ${chapterEntry?.title ?? ""} ${plainText}`),
     } satisfies BookDocument;
