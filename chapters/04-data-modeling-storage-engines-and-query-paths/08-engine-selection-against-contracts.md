@@ -1,5 +1,7 @@
 # Engine Selection Against Contracts
 
+![Figure: Engine selection against contracts](images/08-engine-selection-contracts.png)
+
 ## Abstract
 
 Engine selection is the most cargo-culted decision in system architecture and the easiest to do correctly, because by this point in the book the rubric already exists: an engine is admissible for a store exactly when it demonstrably satisfies that store's Chapter 03 contracts (ownership enforcement, consistency and isolation claims, recovery budgets, deletion mechanics) at the amplification position (file 02) the access-pattern matrix (file 01) requires — and "demonstrably" means adversarial evidence of the Jepsen class, not documentation, because the documented-versus-delivered gap in consistency guarantees is one of the most reproducible findings in systems evaluation ([Jepsen analyses](https://jepsen.io/analyses)). This file turns that into a selection procedure, adds the two portfolio-level forces that per-store rubrics miss — sprawl cost (every additional engine is a permanent tax in expertise, drills, security surface, and on-call depth) and its opposite, the one-engine hammer (serving RUM-incompatible patterns from the incumbent because migration is annoying) — and closes with the evaluation protocol that keeps benchmarks from lying.
