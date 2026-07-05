@@ -1,5 +1,7 @@
 # Recovery, Backup, and Replay
 
+![Figure: Recovery backup and replay](images/08-recovery-backup-replay.png)
+
 ## Abstract
 
 Recovery is the only state contract whose violation is permanent, and it is governed by an uncomfortable epistemological rule: a backup is a hypothesis, and only a restore is evidence. This file specifies recovery as a budgeted, layered, drilled system — RPO/RTO budgets per state item derived from the objective rather than from what the current tooling happens to deliver; the defense-in-depth layering from [Google SRE's data-integrity chapter](https://sre.google/sre-book/data-integrity/) (soft deletion, then backups-plus-restore, then early detection via validation, because the failure modes each layer catches are different); and restore drills as the only admissible evidence class. The founding incident is GitLab's January 2017 outage: an operator deleted the wrong data directory, and *all five* of the team's backup/replication mechanisms turned out to be broken or inapplicable — the eventual source of recovery was a staging snapshot taken by luck six hours earlier, and six hours of customer data were gone permanently ([GitLab postmortem](https://about.gitlab.com/blog/postmortem-of-database-outage-of-january-31/)). Five mechanisms, zero evidence, one coincidence: that is what untested recovery looks like from the inside.
