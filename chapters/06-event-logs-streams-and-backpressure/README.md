@@ -61,6 +61,8 @@ Each file is a self-contained research note: abstract, formal model, ASCII figur
 13. Schema compatibility is transitive and scoped to every version inside retention; the registry enforces at produce time; consumer registries answer "who reads this"; semantic shifts ride new fields.
 14. Every failure mode F1–F8 has an owner, a runbook, and a leading indicator; the degradation ladder D1–D5 and the cross-flow criticality ranking are agreed before the incident.
 15. Event-flow evidence carries class, date, and flow-generation stamp (topic config, group protocol, schema versions, fleet); any stamped-field change resets the evidence to `assumed`.
+16. The log is admitted per flow by naming the gifts it was chosen for (replay, order, fan-out); work-queue workloads take queue semantics (share groups or a queue) instead of compensating on consumer groups; capacity headroom is reviewed as the recovery multiplier λ/(μ−λ), not as a utilization virtue.
+17. Flows feeding models and indexes carry transform/model versions in the envelope, declare a freshness SLO per index, price re-derivation replays at GPU rates before approval, persist nondeterministic derived artifacts, and share one derivation graph between training and serving.
 
 ## Chapter Completion Gate
 
@@ -74,6 +76,8 @@ Chapter 06 is complete only when the reviewer can answer these questions without
 - For any stateful processor: what is the measured recovery time, and what do its windowed outputs mean under replay?
 - For any topic: who declared its retention horizon, who is alarmed as consumers approach it, and can the cold tier actually serve the rebuild that depends on it?
 - For any schema: does its compatibility scope cover everything still readable, and who gets notified before it changes?
+- For any flow: why is it on a log at all — which of replay, order, and fan-out does it actually use, and would queue semantics have served it with less machinery?
+- For any AI-derived index: which model and transform version built it, how stale is it right now, and what does the next model upgrade cost to replay?
 - For every claim above: what is the evidence class, its date, and the flow generation it was proven at?
 
 ## Final Position
