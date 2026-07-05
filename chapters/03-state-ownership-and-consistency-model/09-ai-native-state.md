@@ -1,5 +1,7 @@
 # AI-Native State
 
+![Figure: AI-native state contract](images/09-ai-native-state-contract.png)
+
 ## Abstract
 
 AI systems did not invent new state physics; they invented new state items and then, as an industry, skipped the contracts. This file applies the chapter's machinery — ownership (file 01), consistency (file 02), lineage (file 05), lifecycle (file 06), recovery (file 08) — to the five state classes AI-native systems run on: KV cache, embeddings and vector indexes, agent memory, session/context state, and model artifacts with their registries. None of these gets new policy; each gets the uncomfortable discovery of which existing rule it has been violating. The sharpest case is agent memory, which current research treats as a capability problem (Letta/MemGPT's tiered memory hierarchies ([Packer et al., 2023](https://arxiv.org/abs/2310.08560)); Mem0/A-MEM's adaptive updates) while the security literature documents the consequence of the skipped contracts: memory that misattributes injected content as first-party experience, cannot say where a "fact" came from, and cannot forget on demand ([survey on long-term memory security, 2026](https://arxiv.org/html/2604.16548v1)). A memory write is a state mutation by an untrusted writer — file 01 has an opinion about that, and this file enforces it.

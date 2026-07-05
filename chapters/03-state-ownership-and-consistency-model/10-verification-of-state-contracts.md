@@ -1,5 +1,7 @@
 # Verification of State Contracts
 
+![Figure: Verification of state contracts](images/10-verification-state-contracts.png)
+
 ## Abstract
 
 State contracts fail silently by default: a consistency claim degrades into a lie the day a cache is added to its path, an isolation level differs from its documentation, a rebuild path dies when retention shortens, and none of it pages anyone — the system keeps returning 200s over quietly wrong data. This file specifies the evidence regime that converts each contract of files 01–09 into something that can fail loudly: adversarial consistency and isolation testing in the tradition of [Jepsen](https://jepsen.io/analyses) (whose analyses keep finding that mature databases violate their documented guarantees under partition and process pause) and [Hermitage](https://github.com/ept/hermitage) (whose engine-by-engine matrix shows isolation keywords and isolation behavior are different facts); divergence and lag SLIs that make weak-consistency anomaly budgets measurable; and a drill catalog S1–S10 whose union covers ownership, coordination, lineage, deletion, migration, and recovery. Every result lands in the Chapter 01 file 11 evidence taxonomy — and the taxonomy's bounding rule bites hardest here: a restore tested on 1% of production volume is evidence about 1% of production volume.
