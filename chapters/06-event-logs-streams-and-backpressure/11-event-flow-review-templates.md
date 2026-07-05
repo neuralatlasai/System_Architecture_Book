@@ -22,7 +22,7 @@ gates; the checklist consumes the whole.
 
 ## 2. The Event Flow Dossier
 
-**§A Topic and ordering (file 01).** Topic name, type (history | compacted changelog), partition count with the sizing arithmetic, partition key, and the *written consumer ordering requirement* the key was derived from ("events for X must be observed in order"). Key-skew analysis: cardinality, whale keys, measured distribution. Repartitioning stance: the migration plan, or the declared headroom that defers it.
+**§A Topic and ordering (file 01).** The tool-fit statement first: which of the log's gifts (replay, order, fan-out) this flow actually needs — a flow that names none belongs on queue semantics (file 01 §6) and stops here. Then: topic name, type (history | compacted changelog), partition count with the sizing arithmetic, partition key, and the *written consumer ordering requirement* the key was derived from ("events for X must be observed in order"). Key-skew analysis: cardinality, whale keys, measured distribution. Repartitioning stance: the migration plan, or the declared headroom that defers it.
 
 **§B Delivery contract (file 02).** Per hop, the honest semantics (at-least-once + idempotent effect | transactional-within-log | at-most-once with data-loss sign-off). The dataflow diagram with the transactional boundary drawn. Origin-assigned event ID scheme. For every non-idempotent side effect: its name and its §3-pattern (dedup table | 2PC sink | idempotency-key API), with dedup-window ≥ replay-horizon shown numerically.
 
@@ -32,7 +32,7 @@ gates; the checklist consumes the whole.
 
 **§E Poison and replay (file 05).** Exception-path taxonomy table (class → disposition). Retry-topic tiers if any, with the ordering-honesty reconciliation. DLQ contract: owner, triage SLO, oldest-entry-age alarm, envelope fields, retention > main. Replay procedure: rate cap, abort path, externality masks, time-semantics statement, change-control record.
 
-**§F Processing topology (file 06)** — *if stateful.* Runtime and why. Event-time vs processing-time per operator; watermark policy from measured skew; late-data rule with downstream compatibility. State inventory with TTLs and skew analysis. Checkpoint interval/duration ratio; measured recovery time = declared RTO. Sink classification (2PC | idempotent).
+**§F Processing topology (file 06)** — *if stateful.* Runtime and why. Event-time vs processing-time per operator; watermark policy from measured skew; late-data rule with downstream compatibility. State inventory with TTLs and skew analysis. Checkpoint interval/duration ratio; measured recovery time = declared RTO. Sink classification (2PC | idempotent). For AI-derived flows additionally: transform/model versions in the envelope, freshness SLO per index, re-derivation replay cost estimate at current GPU rates, persistence policy for nondeterministic artifacts, and the single derivation graph shared by training and serving paths.
 
 **§G Retention contract (file 07).** The multi-party horizon table (§1 of file 07) with each declaring party named; floor vs ceiling reconciliation (erasure obligations); expiry-approach alarms; tiered-storage posture with cold-path test results against rebuild claims.
 
@@ -46,25 +46,27 @@ gates; the checklist consumes the whole.
 
 | # | Check | Source gate | Common failure it catches |
 |---:|---|---|---|
-| 1 | Ordering requirement written by *consumers*, key derived from it | f01 ordering-contract | Key chosen for load spreading; "topic is ordered" for n>1 |
-| 2 | Partition arithmetic shown; repartitioning acknowledged as migration | f01 arithmetic | Default count; "add partitions later" on a keyed topic |
-| 3 | No "exactly-once delivery" anywhere; boundary drawn; every non-idempotent effect enumerated with its pattern | f02 vocabulary + non-idempotent-effect | The unenumerated charge/email/increment |
-| 4 | Commit-after-process everywhere, or at-most-once signed off | f02 commit-order | Early commit "for throughput" |
-| 5 | Dedup window ≥ replay horizon, numerically | f02 identity | 24 h dedup under 7 d replay |
-| 6 | Cooperative + static on stateful groups; poll budget from measured batches | f03 protocol + liveness-budget | Eviction storms under dependency slowness |
-| 7 | Per-partition time lag, velocity, and both runways alarmed | f03 lag-SLI / f09 derivative-alarm | Aggregate dashboards hiding the dying partition |
-| 8 | Every buffer bounded with declared overflow; pressure path terminates at a policy, not a crash | f04 bounded-buffer + propagation | The in-app queue ahead of a slow sink |
-| 9 | The producer question answered per topic | f04 producer-policy | Retention expiry as the implicit shedding policy |
-| 10 | Poison taxonomy with distinct dispositions; DLQ has owner, age alarm, exit doors | f05 taxonomy + DLQ-contract | Catch-all handlers; the write-only graveyard |
-| 11 | Replay rehearsed (E6) with externality masks, before it is needed | f05 replay-license | First idempotence test = the production replay |
-| 12 | Watermark policy + late-data rule named; replay time-semantics stated | f06 time-semantics | Processing-time windows on domain logic |
-| 13 | State bounded (TTL); checkpoint ratio alarmed; RTO measured not asserted | f06 state + checkpoint | Unbounded keyspace; rehearsal-free recovery claims |
-| 14 | Retention = max(declared horizons), parties named; ceiling reconciled; expiry alarmed | f07 contract | Seven days chosen by nobody |
-| 15 | Compacted topics: upsert-only readers, tombstone window > bootstrap time | f07 compaction-semantics | Resurrection by slow bootstrap |
-| 16 | Transitive compatibility scoped to the retained tail; registry enforcement pre-produce | f08 scope + enforcement | Non-transitive BACKWARD default; advisory registry |
-| 17 | Envelope complete; consumer registry answers "who reads this" | f08 envelope + consumer-registry | Notification-by-incident |
-| 18 | F-catalog owned; ladder + criticality ranking pre-agreed | f09 ladder + ownership | 3 a.m. triage negotiation |
-| 19 | Evidence ledger current: stamps valid, cadences met, gaps declared with expiry | f10 all | Drills passed against retired topologies |
+| 1 | The log's gifts named per flow; work-queue workloads routed to queue semantics | f01 tool-fit | The task queue on consumer groups, poison machinery compensating |
+| 2 | Ordering requirement written by *consumers*, key derived from it | f01 ordering-contract | Key chosen for load spreading; "topic is ordered" for n>1 |
+| 3 | Partition arithmetic shown; repartitioning acknowledged as migration | f01 arithmetic | Default count; "add partitions later" on a keyed topic |
+| 4 | No "exactly-once delivery" anywhere; boundary drawn; every non-idempotent effect enumerated with its pattern | f02 vocabulary + non-idempotent-effect | The unenumerated charge/email/increment |
+| 5 | Commit-after-process everywhere, or at-most-once signed off | f02 commit-order | Early commit "for throughput" |
+| 6 | Dedup window ≥ replay horizon, numerically | f02 identity | 24 h dedup under 7 d replay |
+| 7 | Cooperative + static on stateful groups; standby replicas on gigabyte-state groups; poll budget from measured batches | f03 protocol + liveness-budget | Eviction storms under dependency slowness |
+| 8 | Per-partition time lag, velocity, and both runways alarmed; recovery multiplier λ/(μ−λ) computed at declared utilization | f03 lag-SLI / f09 derivative-alarm | Aggregate dashboards hiding the dying partition; 95% utilization sold as efficiency |
+| 9 | Every buffer bounded with declared overflow; pressure path terminates at a policy, not a crash | f04 bounded-buffer + propagation | The in-app queue ahead of a slow sink |
+| 10 | The producer question answered per topic | f04 producer-policy | Retention expiry as the implicit shedding policy |
+| 11 | Poison taxonomy with distinct dispositions; DLQ has owner, age alarm, exit doors | f05 taxonomy + DLQ-contract | Catch-all handlers; the write-only graveyard |
+| 12 | Replay rehearsed (E6) with externality masks, before it is needed | f05 replay-license | First idempotence test = the production replay |
+| 13 | Watermark policy + late-data rule named; replay time-semantics stated | f06 time-semantics | Processing-time windows on domain logic |
+| 14 | State bounded (TTL); checkpoint ratio alarmed; RTO measured not asserted | f06 state + checkpoint | Unbounded keyspace; rehearsal-free recovery claims |
+| 15 | AI flows: transform versions in envelope; re-derivation cost-estimated; freshness SLO per index; one derivation graph for training and serving | f06 AI-flow | Model upgrades discovered at GPU-invoice time; training/serving skew |
+| 16 | Retention = max(declared horizons), parties named; ceiling reconciled; expiry alarmed | f07 contract | Seven days chosen by nobody |
+| 17 | Compacted topics: upsert-only readers, tombstone window > bootstrap time | f07 compaction-semantics | Resurrection by slow bootstrap |
+| 18 | Transitive compatibility scoped to the retained tail; registry enforcement pre-produce | f08 scope + enforcement | Non-transitive BACKWARD default; advisory registry |
+| 19 | Envelope complete; consumer registry answers "who reads this" | f08 envelope + consumer-registry | Notification-by-incident |
+| 20 | F-catalog owned; ladder + criticality ranking pre-agreed | f09 ladder + ownership | 3 a.m. triage negotiation |
+| 21 | Evidence ledger current: stamps valid, cadences met, gaps declared with expiry | f10 all | Drills passed against retired topologies |
 
 ## 4. Approval Statement
 
@@ -72,7 +74,7 @@ Approval of an event-flow dossier asserts: the ordering, delivery, retention, an
 
 ## Output
 
-The output of this file — and the chapter — is an executable review instrument: a ten-section dossier that forces the deferred questions of event-driven design into written, evidence-stamped answers, and a nineteen-point checklist that converts this chapter's gates into findings a review can actually produce.
+The output of this file — and the chapter — is an executable review instrument: a ten-section dossier that forces the deferred questions of event-driven design into written, evidence-stamped answers, and a twenty-one-point checklist that converts this chapter's gates into findings a review can actually produce.
 
 ## References
 
