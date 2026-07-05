@@ -1,16 +1,18 @@
 import {
   BookOpen,
   CheckCircle2,
+  ChevronLeft,
   ChevronRight,
   Copy,
-  Library,
+  FileText,
+  ListTree,
   Moon,
   PanelLeft,
   Search,
   Sun,
 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import type { BookChapter, BookContent, BookDocument } from "./types";
+import type { BookChapter, BookContent, BookDocument, BookHeading } from "./types";
 
 const bookContentUrl = `${import.meta.env.BASE_URL}book-content.json`;
 
@@ -54,10 +56,6 @@ function setDocumentHash(documentId: string, section?: string): void {
   window.location.hash = params.toString();
 }
 
-function formatNumber(value: number): string {
-  return new Intl.NumberFormat("en-US").format(value);
-}
-
 function scoreDocument(document: BookDocument, query: string): number {
   if (query.length === 0) {
     return 0;
@@ -84,6 +82,15 @@ function scoreDocument(document: BookDocument, query: string): number {
   }
 
   return score;
+}
+
+function sourceFileName(document: BookDocument): string {
+  const segments = document.relativePath.split("/");
+  return segments[segments.length - 1] ?? document.relativePath;
+}
+
+function chapterLabel(document: BookDocument): string {
+  return document.chapterNumber ? `Chapter ${String(document.chapterNumber).padStart(2, "0")}` : "Overview";
 }
 
 function App(): JSX.Element {
@@ -122,7 +129,7 @@ function App(): JSX.Element {
   }, []);
 
   if (loadState.status === "loading") {
-    return <ShellStatus title="Loading book" detail="Building the online reader index." />;
+    return <ShellStatus title="Loading book" detail="Building the reader index." />;
   }
 
   if (loadState.status === "error") {
@@ -140,12 +147,12 @@ interface ShellStatusProps {
 function ShellStatus({ title, detail }: ShellStatusProps): JSX.Element {
   return (
     <main className="grid min-h-screen place-items-center bg-[var(--surface)] px-6 text-[var(--ink)]">
-      <section className="w-full max-w-md rounded-[8px] border border-[var(--line)] bg-[var(--panel)] p-6">
-        <div className="mb-4 grid h-10 w-10 place-items-center rounded-[8px] border border-[var(--line)] bg-[var(--wash)]">
+      <section className="status-panel">
+        <div className="status-mark">
           <BookOpen size={20} />
         </div>
-        <h1 className="text-xl font-semibold">{title}</h1>
-        <p className="mt-2 text-sm leading-6 text-[var(--muted)]">{detail}</p>
+        <h1>{title}</h1>
+        <p>{detail}</p>
       </section>
     </main>
   );
@@ -163,7 +170,6 @@ function BookReader({ book }: BookReaderProps): JSX.Element {
   const [pendingSectionId, setPendingSectionId] = useState<string | undefined>(initialHash?.section);
   const [query, setQuery] = useState("");
   const [darkMode, setDarkMode] = useState(() => localStorage.getItem("book-theme") === "dark");
-  const [readingProgress, setReadingProgress] = useState(0);
   const [isNavigationOpen, setIsNavigationOpen] = useState(false);
   const [copied, setCopied] = useState(false);
 
@@ -171,16 +177,9 @@ function BookReader({ book }: BookReaderProps): JSX.Element {
   const selectedChapter = selectedDocument?.chapterNumber
     ? book.chapters.find((chapter) => chapter.number === selectedDocument.chapterNumber)
     : undefined;
-
-  const chapterDocuments = useMemo(() => {
-    if (!selectedChapter) {
-      return book.documents.filter((document) => document.kind === "book-overview");
-    }
-
-    return selectedChapter.documentIds
-      .map((documentId) => documentsById.get(documentId))
-      .filter((document): document is BookDocument => Boolean(document));
-  }, [selectedChapter]);
+  const selectedIndex = book.documents.findIndex((document) => document.id === selectedDocument?.id);
+  const previousDocument = selectedIndex > 0 ? book.documents[selectedIndex - 1] : undefined;
+  const nextDocument = selectedIndex >= 0 && selectedIndex < book.documents.length - 1 ? book.documents[selectedIndex + 1] : undefined;
 
   const normalizedQuery = query.trim().toLowerCase();
   const searchHits = useMemo<SearchHit[]>(() => {
@@ -198,8 +197,8 @@ function BookReader({ book }: BookReaderProps): JSX.Element {
 
         return left.document.relativePath.localeCompare(right.document.relativePath);
       })
-      .slice(0, 18);
-  }, [normalizedQuery]);
+      .slice(0, 24);
+  }, [book.documents, normalizedQuery]);
 
   const navigateToDocument = useCallback((documentId: string, section?: string) => {
     setSelectedDocumentId(documentId);
@@ -226,32 +225,6 @@ function BookReader({ book }: BookReaderProps): JSX.Element {
     document.documentElement.dataset.theme = darkMode ? "dark" : "light";
     localStorage.setItem("book-theme", darkMode ? "dark" : "light");
   }, [darkMode]);
-
-  useEffect(() => {
-    const updateProgress = (): void => {
-      const article = document.getElementById("article");
-
-      if (!article) {
-        setReadingProgress(0);
-        return;
-      }
-
-      const articleRect = article.getBoundingClientRect();
-      const viewportHeight = window.innerHeight;
-      const total = Math.max(1, articleRect.height - viewportHeight);
-      const consumed = Math.min(total, Math.max(0, -articleRect.top));
-      setReadingProgress(Math.round((consumed / total) * 100));
-    };
-
-    updateProgress();
-    window.addEventListener("scroll", updateProgress, { passive: true });
-    window.addEventListener("resize", updateProgress);
-
-    return () => {
-      window.removeEventListener("scroll", updateProgress);
-      window.removeEventListener("resize", updateProgress);
-    };
-  }, [selectedDocumentId]);
 
   useEffect(() => {
     const sectionId = pendingSectionId;
@@ -288,8 +261,8 @@ function BookReader({ book }: BookReaderProps): JSX.Element {
         Skip to content
       </a>
 
-      <header className="sticky top-0 z-40 border-b border-[var(--line)] bg-[var(--surface-elevated)]/95 backdrop-blur">
-        <div className="mx-auto flex min-h-16 max-w-[1840px] items-center gap-3 px-4 py-3 lg:px-6">
+      <header className="site-header">
+        <div className="site-header-inner">
           <button
             aria-label="Open navigation"
             className="icon-button lg:hidden"
@@ -300,37 +273,26 @@ function BookReader({ book }: BookReaderProps): JSX.Element {
             <PanelLeft size={18} />
           </button>
 
-          <button
-            className="flex min-w-0 items-center gap-3 text-left"
-            type="button"
-            onClick={() => navigateToDocument("overview")}
-          >
-            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-[8px] border border-[var(--line)] bg-[var(--panel)]">
+          <button className="brand-lockup" type="button" onClick={() => navigateToDocument("overview")}>
+            <span className="brand-mark">
               <BookOpen size={20} />
             </span>
-            <span className="min-w-0">
-              <span className="block truncate text-sm font-semibold uppercase text-[var(--muted)]">Online Book</span>
-              <span className="block truncate text-base font-semibold text-[var(--ink)]">{book.title}</span>
+            <span className="brand-copy">
+              <span>System Architecture</span>
+              <strong>Online Book</strong>
             </span>
           </button>
 
-          <label className="ml-auto hidden min-w-[18rem] max-w-[32rem] flex-1 items-center gap-2 rounded-[8px] border border-[var(--line)] bg-[var(--panel)] px-3 py-2 md:flex">
-            <Search aria-hidden="true" size={18} className="text-[var(--muted)]" />
+          <label className="search-shell">
+            <Search aria-hidden="true" size={18} />
             <span className="sr-only">Search documents</span>
             <input
-              className="w-full bg-transparent text-sm text-[var(--ink)] outline-none placeholder:text-[var(--muted)]"
-              placeholder="Search chapters, failure modes, SLOs, cache, quorum..."
+              placeholder="Search systems, state, queues, recovery..."
               type="search"
               value={query}
               onChange={(event) => setQuery(event.target.value)}
             />
           </label>
-
-          <div className="hidden items-center gap-2 xl:flex">
-            <Metric label="Chapters" value={`${book.metrics.chaptersAvailable}/${book.metrics.chaptersTotal}`} />
-            <Metric label="Notes" value={formatNumber(book.metrics.documentsTotal)} />
-            <Metric label="Words" value={formatNumber(book.metrics.wordsTotal)} />
-          </div>
 
           <button
             aria-label={darkMode ? "Use light theme" : "Use dark theme"}
@@ -342,31 +304,13 @@ function BookReader({ book }: BookReaderProps): JSX.Element {
             {darkMode ? <Sun size={18} /> : <Moon size={18} />}
           </button>
         </div>
-
-        <div className="px-4 pb-3 md:hidden">
-          <label className="flex items-center gap-2 rounded-[8px] border border-[var(--line)] bg-[var(--panel)] px-3 py-2">
-            <Search aria-hidden="true" size={18} className="text-[var(--muted)]" />
-            <span className="sr-only">Search documents</span>
-            <input
-              className="w-full bg-transparent text-sm text-[var(--ink)] outline-none placeholder:text-[var(--muted)]"
-              placeholder="Search the book"
-              type="search"
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-            />
-          </label>
-        </div>
       </header>
 
-      <div className="mx-auto grid max-w-[1840px] grid-cols-1 gap-0 lg:grid-cols-[20rem_minmax(0,1fr)] xl:grid-cols-[20rem_minmax(0,1fr)_18rem]">
-        <aside
-          className={`border-r border-[var(--line)] bg-[var(--surface)] lg:sticky lg:top-16 lg:block lg:h-[calc(100vh-4rem)] lg:overflow-y-auto ${
-            isNavigationOpen ? "block" : "hidden"
-          }`}
-        >
+      <div className="reader-shell">
+        <aside className={`library-pane ${isNavigationOpen ? "block" : "hidden"}`}>
           <BookNavigation
             chapters={book.chapters}
-            chapterDocuments={chapterDocuments}
+            documentsById={documentsById}
             query={query}
             searchHits={searchHits}
             selectedDocumentId={selectedDocument.id}
@@ -375,14 +319,14 @@ function BookReader({ book }: BookReaderProps): JSX.Element {
           />
         </aside>
 
-        <main className="min-w-0 overflow-x-hidden px-4 py-6 sm:px-6 lg:px-8">
-          <div className="mb-4 lg:hidden">
-            <label className="text-xs font-semibold uppercase text-[var(--muted)]" htmlFor="document-select">
+        <main className="reader-main">
+          <div className="mb-5 lg:hidden">
+            <label className="document-select-label" htmlFor="document-select">
               Document
             </label>
             <select
               id="document-select"
-              className="mt-2 w-full rounded-[8px] border border-[var(--line)] bg-[var(--panel)] px-3 py-3 text-sm text-[var(--ink)]"
+              className="document-select"
               value={selectedDocument.id}
               onChange={(event) => navigateToDocument(event.target.value)}
             >
@@ -395,52 +339,34 @@ function BookReader({ book }: BookReaderProps): JSX.Element {
             </select>
           </div>
 
-          <article id="article" className="mx-auto max-w-[980px]">
+          <article id="article" className="article-frame">
             <ArticleHeader document={selectedDocument} chapter={selectedChapter} onCopySourcePath={copySourcePath} copied={copied} />
 
             {selectedDocument.coverImage ? (
-              <figure className="mb-8 overflow-hidden rounded-[8px] border border-[var(--line)] bg-[var(--panel)]">
-                <img
-                  alt=""
-                  className="max-h-[420px] w-full object-contain"
-                  decoding="async"
-                  loading="eager"
-                  src={selectedDocument.coverImage}
-                />
+              <figure className="article-hero-media">
+                <img alt="" decoding="async" loading="eager" src={selectedDocument.coverImage} />
               </figure>
             ) : null}
 
             <div className="article-prose" dangerouslySetInnerHTML={{ __html: selectedDocument.html }} />
+
+            <DocumentTravel previousDocument={previousDocument} nextDocument={nextDocument} onNavigate={navigateToDocument} />
           </article>
         </main>
 
-        <aside className="hidden border-l border-[var(--line)] bg-[var(--surface)] xl:sticky xl:top-16 xl:block xl:h-[calc(100vh-4rem)] xl:overflow-y-auto">
-          <ReaderRail document={selectedDocument} readingProgress={readingProgress} onNavigate={navigateToDocument} />
+        <aside className="section-pane">
+          <SectionTravel document={selectedDocument} onNavigate={navigateToDocument} />
         </aside>
       </div>
     </div>
   );
 }
 
-interface MetricProps {
-  readonly label: string;
-  readonly value: string;
-}
-
-function Metric({ label, value }: MetricProps): JSX.Element {
-  return (
-    <div className="rounded-[8px] border border-[var(--line)] bg-[var(--panel)] px-3 py-2">
-      <span className="block text-[11px] font-semibold uppercase text-[var(--muted)]">{label}</span>
-      <span className="block text-sm font-semibold text-[var(--ink)]">{value}</span>
-    </div>
-  );
-}
-
 interface BookNavigationProps {
-  readonly chapters: BookChapter[];
-  readonly chapterDocuments: BookDocument[];
+  readonly chapters: readonly BookChapter[];
+  readonly documentsById: ReadonlyMap<string, BookDocument>;
   readonly query: string;
-  readonly searchHits: SearchHit[];
+  readonly searchHits: readonly SearchHit[];
   readonly selectedDocumentId: string;
   readonly selectedChapterNumber?: number;
   readonly onNavigate: (documentId: string, section?: string) => void;
@@ -448,7 +374,7 @@ interface BookNavigationProps {
 
 function BookNavigation({
   chapters,
-  chapterDocuments,
+  documentsById,
   query,
   searchHits,
   selectedDocumentId,
@@ -458,10 +384,10 @@ function BookNavigation({
   const hasQuery = query.trim().length > 0;
 
   return (
-    <nav aria-label="Book navigation" className="space-y-6 p-4">
+    <nav aria-label="Book navigation" className="library-nav">
       <section>
-        <div className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase text-[var(--muted)]">
-          <Library size={15} />
+        <div className="nav-kicker">
+          <ListTree size={15} />
           Library
         </div>
 
@@ -470,66 +396,95 @@ function BookNavigation({
           type="button"
           onClick={() => onNavigate("overview")}
         >
+          <span className="chapter-number">00</span>
           <span className="min-w-0">
             <span className="block truncate font-semibold">Book Overview</span>
-            <span className="block truncate text-xs text-[var(--muted)]">Root index and reading protocol</span>
+            <span className="block truncate text-xs text-[var(--muted)]">README.md</span>
           </span>
-          <ChevronRight aria-hidden="true" size={16} />
         </button>
+      </section>
 
-        <div className="mt-3 space-y-2">
+      {hasQuery ? (
+        <section>
+          <div className="nav-kicker">Results</div>
+          <div className="document-list">
+            {searchHits.map(({ document }) => (
+              <DocumentButton
+                key={document.id}
+                document={document}
+                selected={selectedDocumentId === document.id}
+                onNavigate={onNavigate}
+              />
+            ))}
+            {searchHits.length === 0 ? <p className="empty-state">No matches.</p> : null}
+          </div>
+        </section>
+      ) : (
+        <section className="chapter-tree">
           {chapters.map((chapter) => {
             const firstDocumentId = chapter.documentIds[0];
             const isActive = selectedChapterNumber === chapter.number;
-            const disabled = chapter.status === "planned" || !firstDocumentId;
+            const chapterDocuments = chapter.documentIds
+              .map((documentId) => documentsById.get(documentId))
+              .filter((document): document is BookDocument => Boolean(document));
 
             return (
-              <button
-                key={chapter.number}
-                className={`chapter-button ${isActive ? "chapter-button-active" : ""}`}
-                disabled={disabled}
-                type="button"
-                onClick={() => firstDocumentId && onNavigate(firstDocumentId)}
-              >
-                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-[8px] bg-[var(--wash)] text-xs font-semibold">
-                  {String(chapter.number).padStart(2, "0")}
-                </span>
-                <span className="min-w-0">
-                  <span className="block truncate font-semibold">{chapter.title}</span>
-                  <span className="block truncate text-xs text-[var(--muted)]">
-                    {chapter.status === "available" ? `${chapter.documentIds.length} documents` : "Planned"}
+              <div key={chapter.number} className="chapter-group">
+                <button
+                  className={`chapter-button ${isActive ? "chapter-button-active" : ""}`}
+                  disabled={!firstDocumentId}
+                  type="button"
+                  onClick={() => firstDocumentId && onNavigate(firstDocumentId)}
+                >
+                  <span className="chapter-number">{String(chapter.number).padStart(2, "0")}</span>
+                  <span className="min-w-0">
+                    <span className="block truncate font-semibold">{chapter.title}</span>
+                    <span className="block truncate text-xs text-[var(--muted)]">
+                      {chapter.status === "available" ? "Available" : "Planned"}
+                    </span>
                   </span>
-                </span>
-              </button>
+                </button>
+
+                {isActive && chapterDocuments.length > 0 ? (
+                  <div className="document-list">
+                    {chapterDocuments.map((document) => (
+                      <DocumentButton
+                        key={document.id}
+                        document={document}
+                        selected={selectedDocumentId === document.id}
+                        onNavigate={onNavigate}
+                      />
+                    ))}
+                  </div>
+                ) : null}
+              </div>
             );
           })}
-        </div>
-      </section>
-
-      <section>
-        <div className="mb-3 text-xs font-semibold uppercase text-[var(--muted)]">
-          {hasQuery ? "Search Results" : "Current Chapter"}
-        </div>
-
-        <div className="space-y-2">
-          {(hasQuery ? searchHits.map((hit) => hit.document) : chapterDocuments).map((document) => (
-            <button
-              key={document.id}
-              className={`document-button ${selectedDocumentId === document.id ? "document-button-active" : ""}`}
-              type="button"
-              onClick={() => onNavigate(document.id)}
-            >
-              <span className="line-clamp-2 text-sm font-semibold">{document.title}</span>
-              <span className="mt-1 block truncate text-xs text-[var(--muted)]">
-                {document.chapterNumber ? `Chapter ${document.chapterNumber}` : "Book"} · {document.readingMinutes} min
-              </span>
-            </button>
-          ))}
-
-          {hasQuery && searchHits.length === 0 ? <p className="rounded-[8px] border border-[var(--line)] p-3 text-sm text-[var(--muted)]">No matches.</p> : null}
-        </div>
-      </section>
+        </section>
+      )}
     </nav>
+  );
+}
+
+interface DocumentButtonProps {
+  readonly document: BookDocument;
+  readonly selected: boolean;
+  readonly onNavigate: (documentId: string, section?: string) => void;
+}
+
+function DocumentButton({ document, selected, onNavigate }: DocumentButtonProps): JSX.Element {
+  return (
+    <button
+      className={`document-button ${selected ? "document-button-active" : ""}`}
+      type="button"
+      onClick={() => onNavigate(document.id)}
+    >
+      <FileText aria-hidden="true" size={14} />
+      <span className="min-w-0">
+        <span className="line-clamp-2 text-sm font-medium">{document.title}</span>
+        <span className="block truncate text-xs text-[var(--muted)]">{sourceFileName(document)}</span>
+      </span>
+    </button>
   );
 }
 
@@ -542,23 +497,9 @@ interface ArticleHeaderProps {
 
 function ArticleHeader({ document, chapter, copied, onCopySourcePath }: ArticleHeaderProps): JSX.Element {
   return (
-    <header className="mb-8 border-b border-[var(--line)] pb-6">
-      <div className="mb-4 flex flex-wrap items-center gap-2">
-        {document.chapterNumber ? (
-          <span className="rounded-[8px] border border-[var(--line)] bg-[var(--panel)] px-3 py-1 text-xs font-semibold uppercase text-[var(--muted)]">
-            Chapter {String(document.chapterNumber).padStart(2, "0")}
-          </span>
-        ) : (
-          <span className="rounded-[8px] border border-[var(--line)] bg-[var(--panel)] px-3 py-1 text-xs font-semibold uppercase text-[var(--muted)]">
-            Overview
-          </span>
-        )}
-        <span className="rounded-[8px] border border-[var(--line)] bg-[var(--panel)] px-3 py-1 text-xs font-semibold uppercase text-[var(--muted)]">
-          {document.readingMinutes} min
-        </span>
-        <span className="rounded-[8px] border border-[var(--line)] bg-[var(--panel)] px-3 py-1 text-xs font-semibold uppercase text-[var(--muted)]">
-          {formatNumber(document.wordCount)} words
-        </span>
+    <header className="article-header">
+      <div className="article-eyebrow-row">
+        <span className="article-eyebrow">{chapterLabel(document)}</span>
         <button
           aria-label="Copy source path"
           className="icon-button ml-auto"
@@ -570,54 +511,86 @@ function ArticleHeader({ document, chapter, copied, onCopySourcePath }: ArticleH
         </button>
       </div>
 
-      <h1 className="max-w-[900px] text-3xl font-semibold leading-tight text-[var(--ink)] sm:text-4xl">{document.title}</h1>
+      <h1>{document.title}</h1>
 
-      {chapter?.conclusion ? <p className="mt-4 max-w-[850px] text-base leading-7 text-[var(--muted)]">{chapter.conclusion}</p> : null}
-
-      <p className="mt-4 break-all text-sm text-[var(--muted)]">{document.relativePath}</p>
+      {chapter?.conclusion ? <p>{chapter.conclusion}</p> : null}
     </header>
   );
 }
 
-interface ReaderRailProps {
+interface SectionTravelProps {
   readonly document: BookDocument;
-  readonly readingProgress: number;
   readonly onNavigate: (documentId: string, section?: string) => void;
 }
 
-function ReaderRail({ document, readingProgress, onNavigate }: ReaderRailProps): JSX.Element {
-  const visibleHeadings = document.headings.filter((heading) => heading.depth >= 2 && heading.depth <= 3).slice(0, 18);
+function SectionTravel({ document, onNavigate }: SectionTravelProps): JSX.Element {
+  const visibleHeadings = document.headings.filter((heading) => heading.depth >= 2 && heading.depth <= 3).slice(0, 22);
 
   return (
-    <div className="space-y-6 p-4">
-      <section className="rounded-[8px] border border-[var(--line)] bg-[var(--panel)] p-4">
-        <div className="mb-3 flex items-center justify-between text-xs font-semibold uppercase text-[var(--muted)]">
-          <span>Reading</span>
-          <span>{readingProgress}%</span>
-        </div>
-        <div className="h-2 overflow-hidden rounded-full bg-[var(--wash)]">
-          <div className="h-full bg-[var(--accent)] transition-[width]" style={{ width: `${readingProgress}%` }} />
-        </div>
-      </section>
+    <nav aria-label="Article sections" className="section-travel">
+      <div className="nav-kicker">Sections</div>
+      <div className="section-ball-list">
+        {visibleHeadings.map((heading) => (
+          <SectionBall key={heading.id} documentId={document.id} heading={heading} onNavigate={onNavigate} />
+        ))}
+        {visibleHeadings.length === 0 ? <p className="empty-state">No sections.</p> : null}
+      </div>
+    </nav>
+  );
+}
 
-      <section>
-        <div className="mb-3 text-xs font-semibold uppercase text-[var(--muted)]">Sections</div>
-        <div className="space-y-1">
-          {visibleHeadings.map((heading) => (
-            <button
-              key={heading.id}
-              className={`section-link ${heading.depth === 3 ? "pl-5" : ""}`}
-              type="button"
-              onClick={() => onNavigate(document.id, heading.id)}
-            >
-              {heading.title}
-            </button>
-          ))}
+interface SectionBallProps {
+  readonly documentId: string;
+  readonly heading: BookHeading;
+  readonly onNavigate: (documentId: string, section?: string) => void;
+}
 
-          {visibleHeadings.length === 0 ? <p className="text-sm text-[var(--muted)]">No section headings.</p> : null}
-        </div>
-      </section>
-    </div>
+function SectionBall({ documentId, heading, onNavigate }: SectionBallProps): JSX.Element {
+  return (
+    <button
+      className={`section-ball ${heading.depth === 3 ? "section-ball-nested" : ""}`}
+      type="button"
+      onClick={() => onNavigate(documentId, heading.id)}
+    >
+      <span aria-hidden="true" />
+      <strong>{heading.title}</strong>
+    </button>
+  );
+}
+
+interface DocumentTravelProps {
+  readonly previousDocument?: BookDocument;
+  readonly nextDocument?: BookDocument;
+  readonly onNavigate: (documentId: string, section?: string) => void;
+}
+
+function DocumentTravel({ previousDocument, nextDocument, onNavigate }: DocumentTravelProps): JSX.Element {
+  return (
+    <nav aria-label="Document travel" className="document-travel">
+      {previousDocument ? (
+        <button className="travel-link" type="button" onClick={() => onNavigate(previousDocument.id)}>
+          <ChevronLeft aria-hidden="true" size={18} />
+          <span>
+            <small>Previous</small>
+            <strong>{previousDocument.title}</strong>
+          </span>
+        </button>
+      ) : (
+        <span />
+      )}
+
+      {nextDocument ? (
+        <button className="travel-link travel-link-next" type="button" onClick={() => onNavigate(nextDocument.id)}>
+          <span>
+            <small>Next</small>
+            <strong>{nextDocument.title}</strong>
+          </span>
+          <ChevronRight aria-hidden="true" size={18} />
+        </button>
+      ) : (
+        <span />
+      )}
+    </nav>
   );
 }
 

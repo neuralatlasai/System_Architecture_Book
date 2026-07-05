@@ -158,6 +158,70 @@ function compareMarkdownFiles(left: string, right: string): number {
   return leftOrder === rightOrder ? left.localeCompare(right) : leftOrder - rightOrder;
 }
 
+function compareMarkdownPaths(left: string, right: string): number {
+  const leftSegments = toPosixPath(left).split("/");
+  const rightSegments = toPosixPath(right).split("/");
+  const maxLength = Math.max(leftSegments.length, rightSegments.length);
+
+  for (let index = 0; index < maxLength; index += 1) {
+    const leftSegment = leftSegments[index];
+    const rightSegment = rightSegments[index];
+
+    if (leftSegment === undefined) {
+      return -1;
+    }
+
+    if (rightSegment === undefined) {
+      return 1;
+    }
+
+    if (leftSegment === rightSegment) {
+      continue;
+    }
+
+    const bothFiles = leftSegment.endsWith(".md") && rightSegment.endsWith(".md");
+    const result = bothFiles ? compareMarkdownFiles(leftSegment, rightSegment) : leftSegment.localeCompare(rightSegment);
+
+    if (result !== 0) {
+      return result;
+    }
+  }
+
+  return 0;
+}
+
+function collectMarkdownFiles(rootDir: string): string[] {
+  const result: string[] = [];
+  const stack = [rootDir];
+
+  while (stack.length > 0) {
+    const currentDir = stack.pop();
+
+    if (!currentDir) {
+      continue;
+    }
+
+    const entries = fs.readdirSync(currentDir, { withFileTypes: true });
+
+    for (const entry of entries) {
+      const absolutePath = path.join(currentDir, entry.name);
+
+      if (entry.isDirectory()) {
+        if (!entry.name.startsWith(".")) {
+          stack.push(absolutePath);
+        }
+        continue;
+      }
+
+      if (entry.isFile() && entry.name.endsWith(".md")) {
+        result.push(absolutePath);
+      }
+    }
+  }
+
+  return result;
+}
+
 function parseChapterIndex(readmeText: string): ChapterIndexEntry[] {
   const entries: ChapterIndexEntry[] = [];
   const rowPattern = /^\|\s*(\d+)\s*\|\s*(?:\[([^\]]+)]\(([^)]+)\)|([^|]+?))\s*\|\s*(.*?)\s*\|$/gm;
@@ -215,21 +279,21 @@ function discoverSourceDocuments(): SourceDocument[] {
 
   for (const chapterDir of chapterDirs) {
     const absoluteChapterDir = path.join(chaptersRoot, chapterDir.dirname);
-    const markdownFiles = fs
-      .readdirSync(absoluteChapterDir, { withFileTypes: true })
-      .filter((entry) => entry.isFile() && entry.name.endsWith(".md"))
-      .map((entry) => entry.name)
-      .sort(compareMarkdownFiles);
+    const markdownFiles = collectMarkdownFiles(absoluteChapterDir)
+      .map((filePath) => path.relative(absoluteChapterDir, filePath))
+      .sort(compareMarkdownPaths);
 
-    markdownFiles.forEach((fileName, index) => {
-      const basename = fileName.replace(/\.md$/i, "");
-      const isOverview = fileName === "README.md";
+    markdownFiles.forEach((relativeFilePath, index) => {
+      const absoluteFilePath = path.join(absoluteChapterDir, relativeFilePath);
+      const basename = path.basename(relativeFilePath).replace(/\.md$/i, "");
+      const isOverview = toPosixPath(relativeFilePath) === "README.md";
+      const relativeSlug = toPosixPath(relativeFilePath).replace(/\.md$/i, "");
       documents.push({
         id: isOverview
           ? `ch${String(chapterDir.chapterNumber).padStart(2, "0")}-overview`
-          : `ch${String(chapterDir.chapterNumber).padStart(2, "0")}-${slugify(basename)}`,
-        sourcePath: path.join(absoluteChapterDir, fileName),
-        relativePath: toPosixPath(path.relative(projectRoot, path.join(absoluteChapterDir, fileName))),
+          : `ch${String(chapterDir.chapterNumber).padStart(2, "0")}-${slugify(relativeSlug)}`,
+        sourcePath: absoluteFilePath,
+        relativePath: toPosixPath(path.relative(projectRoot, absoluteFilePath)),
         chapterNumber: chapterDir.chapterNumber,
         order: index,
         kind: isOverview ? "chapter-overview" : "chapter-note",

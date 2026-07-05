@@ -1,5 +1,7 @@
 # Chapter 04 File Map
 
+![Figure: Chapter 04 file map approval dependency graph](images/00-chapter-file-map-approval-graph.png)
+
 ## Purpose
 
 Chapter 03 fixed the state contracts — ownership, consistency, isolation, lineage, lifecycle, recovery. This chapter spends them: data layout, storage engine, index set, and query shape are the decisions that determine whether those contracts are affordable, because every one of them moves cost between the write path, the read path, storage amplification, and recovery complexity. The chapter's law, inherited from the root thesis: data layout must match access patterns — and its corollary, proven at trillion-row scale, is that layout chosen against the access pattern fails not at design review but at the hot partition two years later.

@@ -1,5 +1,7 @@
 # Chapter 04: Data Modeling, Storage Engines, and Query Paths
 
+![Figure: Data path contract overview](images/README-data-path-contract-overview.png)
+
 ## Abstract
 
 Data layout must match access patterns — indexes, materialized views, logs, and denormalized projections are architecture decisions because they move cost between the write path, the read path, storage amplification, and recovery complexity. This chapter builds the machinery behind that thesis: the access-pattern matrix as the modeling artifact that precedes any schema, the RUM conjecture as the law that every engine and index is a position on a triangle rather than a winner ([Athanassoulis et al., EDBT 2016](https://openproceedings.org/2016/conf/edbt/paper-12.pdf)), query paths as contracts whose work bounds are structural rather than statistical, read models as derivation-DAG purchases justified by measured budget failures, analytical and vector paths as pattern families deserving the layouts their shapes demand, and engine selection — deliberately last — as evidence against the Chapter 03 contracts rather than familiarity or fashion.

@@ -1,5 +1,7 @@
 # Query-Path Contracts
 
+![Figure: Query-path contracts](images/04-query-path-contracts.png)
+
 ## Abstract
 
 A query is a request for bounded work, and a query path is production-grade only when the bound is structural — enforced by keys, indexes, cursors, and timeouts — rather than statistical, enforced by today's data happening to be small. This file specifies the query contract (every query names the index that bounds it, its result ceiling, and its timeout), the pagination discipline (keyset/cursor, because OFFSET re-reads everything it skips and degrades linearly with depth — [Winand's no-offset argument](https://use-the-index-luke.com/no-offset)), the N+1 elimination rule (query count must be independent of result count), and the management of the query planner as what it actually is: a nondeterministic runtime dependency whose "plan flips" — a 3 ms index scan silently becoming a 150 ms hash join after a statistics refresh — are a production incident class with named postmortems, not a theoretical concern.

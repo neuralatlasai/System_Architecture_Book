@@ -1,5 +1,7 @@
 # Storage Engine Mechanics and Amplification
 
+![Figure: Storage engine mechanics and amplification](images/02-storage-engine-mechanics-amplification.png)
+
 ## Abstract
 
 Storage engines differ in one respect that matters architecturally: where they spend amplification. The RUM conjecture formalizes the constraint — an access method that bounds two of read overhead, update overhead, and memory/space overhead sets a lower bound on the third; there is no structure that wins all three ([Athanassoulis et al., EDBT 2016](https://openproceedings.org/2016/conf/edbt/paper-12.pdf)). This file makes that triangle the engine-evaluation instrument: the mechanics of the two dominant families — update-in-place B-trees and log-structured merge trees — expressed as amplification profiles, the write-ahead/MVCC machinery that both families carry, and the compaction economics that make LSM behavior a scheduled background workload rather than a free lunch. The comparative numbers come from the practitioners who run these engines at fleet scale: B-trees pay read efficiency for page-granularity write amplification; LSMs pay sequential-write efficiency for compaction rewrite and multi-level read amplification, with RocksDB's leveled compaction tuned explicitly to trade write amplification against space amplification ([Dong et al., CIDR 2017](https://www.cs.toronto.edu/~stumm/Papers/Dong-CIDR-16.pdf); [Callaghan's amplification analyses](http://smalldatum.blogspot.com/2015/11/read-write-space-amplification-b-tree.html)).

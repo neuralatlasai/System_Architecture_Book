@@ -1,5 +1,7 @@
 # Access-Pattern-Driven Data Modeling
 
+![Figure: Access-pattern-driven data modeling](images/01-access-pattern-driven-data-modeling.png)
+
 ## Abstract
 
 Data modeling has exactly one sound direction: from access patterns to layout, never from entities to layout with queries discovered later. This file specifies the access-pattern matrix as the modeling artifact that precedes any schema, the partition-key discipline that keeps load distributable, and normalization as a priced trade between write-path simplicity and read-path fanout rather than a virtue. The founding production evidence runs in both directions. Positive: DynamoDB's data-modeling doctrine — enumerate every access pattern first, then design keys and tables to serve each with bounded work — exists because the engine refuses to rescue unplanned queries ([AWS data-modeling best practices](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/best-practices.html)). Negative: Discord's message store, partitioned by (channel, time bucket), met a workload where one enormous channel turned its partition into a hotspot that degraded whole nodes — the layout was reasonable per entity and wrong per access distribution, and the repair required request coalescing services and ultimately a storage migration ([Discord, trillions of messages](https://discord.com/blog/how-discord-stores-trillions-of-messages)).

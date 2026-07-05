@@ -1,5 +1,7 @@
 # Denormalization, Projections, and Read Models
 
+![Figure: Denormalization projections and read models](images/05-denormalization-projections-read-models.png)
+
 ## Abstract
 
 A read model is a derived, query-shaped copy of source-of-truth data — a denormalized row, a projection table, a per-pattern materialization — built when no index on the source can serve an access pattern within its budget. This file specifies when that purchase is justified, what it costs, and the two contracts that keep it from rotting: every read model is a Chapter 03 file 05 derivation-DAG node (lineage, propagation mechanism, lag SLI, measured rebuild — no exceptions for "it's just a summary table"), and every read model's consumers inherit a *declared staleness*, because a projection fed by CDC is a bounded-staleness read path (Chapter 03 file 02) whatever the dashboard claims. The file also draws the line this chapter keeps: the *decision* to materialize and its contracts live here; the cache/view *engineering* — stampedes, invalidation mechanics, TTL policy — is Chapter 08's.

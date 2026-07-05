@@ -1,5 +1,7 @@
 # Analytical Paths and Columnar Storage
 
+![Figure: Analytical paths and columnar storage](images/06-analytical-paths-columnar-storage.png)
+
 ## Abstract
 
 Analytical access patterns — scan millions of rows, touch few columns, aggregate — sit at the opposite RUM vertex from OLTP point access, and serving both from one layout means serving one of them badly. This file specifies the separation: columnar storage as the layout that matches scan-shaped patterns (read only the projected columns, compress runs of like values, vectorize execution), the OLTP→analytical feed as one more derivation-DAG edge with lag and lineage, and the open-table-format contract — Iceberg-class metadata over Parquet-class files — that has become the SOTA answer to "analytical storage with ACID commits, schema evolution, and time travel on object storage," readable and writable by many engines against one table ([Iceberg ecosystem state, 2025–26](https://datalakehousehub.com/blog/2026-02-state-of-the-apache-iceberg-ecosystem/)). The file's discipline is the same as the chapter's: the lakehouse is not an exemption zone — a table format's snapshots, manifests, and compaction are engine mechanics with amplification budgets (file 02), and an analytical table fed from OLTP is a read model whose staleness its dashboards must wear honestly (file 05).

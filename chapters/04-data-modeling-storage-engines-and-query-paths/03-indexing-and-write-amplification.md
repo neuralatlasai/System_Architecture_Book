@@ -1,5 +1,7 @@
 # Indexing and Write Amplification
 
+![Figure: Indexing and write amplification](images/03-indexing-write-amplification.png)
+
 ## Abstract
 
 An index is a purchased read path: it converts one class of query from scan to seek, and it bills every write to the table forever. This file treats the index set as a portfolio under budget — each index justified by named access-pattern rows, priced in write amplification, space, and lock/maintenance behavior, and audited for the two portfolio diseases: redundant indexes that pay full write cost for marginal read benefit, and missing indexes whose absence is invisible until the planner's fallback scan meets production volume. The pricing law is file 02's RUM triangle applied additively: N secondary indexes make every insert roughly N+1 writes (plus WAL), so the index portfolio is a multiplier on the table's write amplification — the reason "just add an index" is never free and occasionally an outage.
