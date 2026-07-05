@@ -55,7 +55,17 @@ Stream-stream joins hold both sides' unmatched events in state for the join wind
 
 Same theory, different enforcement: Kafka Streams co-locates processing with the consumer group (state in local RocksDB + changelog topics; exactly-once via file 02's transactions, `exactly_once_v2`) — operationally cheap, bounded by the group protocol's rebalance behavior (file 03) and by Kafka-to-Kafka topologies. Flink-class runtimes own their scheduling and checkpointing (barriers, savepoints, arbitrary sources/sinks) — strictly more capable on state size, event-time machinery, and non-Kafka boundaries, at the price of operating a second distributed system. The decision rule: topology complexity and state size pick the runtime; team operational capacity vetoes it (Chapter 04's boring-technology gate applies — a Flink cluster nobody can operate is a liability with checkpoints).
 
-## 5. Approval Gates
+## 5. The AI-Native Instance: Streams Feeding Models and Indexes
+
+The highest-stakes stream topologies in current systems are AI-derived state: document → parse → chunk → embed → index (Chapter 03 file 05's ingestion DAG, run as a production stream) and event → feature → online store (the training/serving path). Everything in this chapter applies with the dials turned to uncomfortable settings, and the settings are worth enumerating because each one defeats a default:
+
+- **Freshness is time lag, and it is a retrieval-quality SLI.** "The index doesn't know that document yet" is file 03's time lag wearing product clothes; it is measured per partition, because one whale tenant's ingestion backlog is exactly the divergence an aggregate hides.
+- **The transform version is part of the record's identity.** Embedding model, chunker version, and prompt/enrichment version go in the envelope (file 08) as schema-governed fields — an embedding without its model version is a number, not a meaning. The corollary is the expensive one: upgrading the model is a **full replay at GPU prices**, and it gets the whole file 05 §4 treatment (rate-capped, cost-estimated *before* approval, run as a dual-index expand–contract in Chapter 03 file 07's shape) rather than being discovered as an invoice.
+- **Idempotence is nearly free here — take it.** Vector-index upserts keyed by origin-assigned chunk ID make the entire path duplicate-tolerant; at-least-once + upsert is the correct default, and transactional machinery is rarely worth its latency in an ingestion flow whose sink converges anyway.
+- **LLM-derived enrichments break replay determinism.** Embeddings are deterministic per model version; generated summaries, labels, and extractions are not — a replay regenerates *different bytes*. Chapter 03 file 05 §5's rule applies with full force: persist the derived artifact as the record of what the system actually served, and let replay *choose* — restore the artifact, or regenerate and accept the divergence — explicitly.
+- **Feature pipelines inherit the diamond.** The same source flowing to training through a batch path and to serving through a stream path is Chapter 03 file 05 §2's diamond, and its production name is training/serving skew. The fix is structural, not procedural: one derivation graph with two materialization cadences, never two independent implementations of "the same" feature.
+
+## 6. Approval Gates
 
 | Gate | Evidence Required | Failure Condition |
 |---|---|---|
@@ -64,10 +74,11 @@ Same theory, different enforcement: Kafka Streams co-locates processing with the
 | Checkpoint gate | Interval vs duration ratio alarmed; incremental checkpointing for large state; recovery time measured by drill = the declared RTO | Checkpoint duration approaching interval; RTO asserted, never rehearsed |
 | Output-boundary gate | Sinks classified: 2PC/transactional vs idempotent/dedup (file 02 §3); result-latency floor from commit cadence stated | Emitted-then-crashed duplicates unhandled; "exactly-once" claimed past a non-transactional sink |
 | Runtime gate | Streams-vs-Flink-class choice justified by topology/state/team arithmetic | Runtime chosen by fashion; second distributed system adopted without an operating owner |
+| AI-flow gate | Transform/model versions in the envelope; re-embedding replays cost-estimated and rate-capped before approval; freshness SLO per index; nondeterministic derived artifacts persisted; one derivation graph across training and serving | Index staleness with no SLI; model upgrades discovered at GPU-invoice time; two "identical" feature implementations diverging |
 
 ## Output
 
-The output of this file is a stream-processing topology admitted as the database it is: event-time semantics with an explicit watermark bargain and late-data rule, checkpointed state with measured recovery and bounded growth, output boundaries enforced transactionally or by declared idempotence, and a runtime placement decision priced in operational capacity rather than capability envy.
+The output of this file is a stream-processing topology admitted as the database it is: event-time semantics with an explicit watermark bargain and late-data rule, checkpointed state with measured recovery and bounded growth, output boundaries enforced transactionally or by declared idempotence, a runtime placement decision priced in operational capacity rather than capability envy — and, for the flows feeding models and indexes, transform versions treated as identity and re-derivation priced at GPU rates before anyone presses replay.
 
 ## References
 
