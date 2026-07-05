@@ -1,5 +1,7 @@
 # Vector and Hybrid Search Paths
 
+![Figure: Vector and hybrid search paths](images/07-vector-hybrid-search-paths.png)
+
 ## Abstract
 
 Approximate nearest-neighbor search is the one query path in this chapter whose *correctness is a tunable* — every ANN index trades recall against latency against memory, which means "the retrieval works" is a measured number with a target, not a property. This file specifies ANN index selection as a RUM-style position among three proven families — graph-based HNSW ([Malkov & Yashunin](https://arxiv.org/abs/1603.09320)): high recall at low latency, paid in memory and build cost; partition-based IVF with product quantization ([FAISS](https://arxiv.org/abs/2401.08281)): memory economy paid in recall/latency; disk-resident graphs (DiskANN/Vamana lineage): billion-scale on NVMe paid in I/O-bound tail latency — plus the two production problems that dominate real deployments more than index choice does: filtered search (predicate + similarity, where naive pre- or post-filtering silently destroys either performance or recall) and hybrid retrieval (lexical + vector fusion, because embeddings miss exact identifiers and lexical misses paraphrase). The state contracts arrive from Chapter 03 file 09 and are not renegotiated here: per-vector lineage, subject attribution for erasure, dual-index model migrations.
