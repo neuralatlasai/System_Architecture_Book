@@ -10,6 +10,8 @@
   --ink: #171a1f;
   --line: #d9e0ea;
   --muted: #5f6b7a;
+  --nav-active: #566575;
+  --nav-active-bg: #f1f4f7;
   --panel: #ffffff;
   --surface: #f6f8fb;
   --surface-elevated: #ffffff;
@@ -28,6 +30,8 @@
   --ink: #f3f6fa;
   --line: #26313d;
   --muted: #a6b1bd;
+  --nav-active: #7f8c9d;
+  --nav-active-bg: #131b24;
   --panel: #111820;
   --surface: #090d12;
   --surface-elevated: #0e141b;
@@ -306,6 +310,11 @@ button:disabled {
   background: var(--panel);
 }
 
+.chapter-button-active {
+  border-color: color-mix(in srgb, var(--nav-active) 32%, var(--line));
+  background: color-mix(in srgb, var(--nav-active-bg) 72%, var(--panel));
+}
+
 .chapter-button:hover {
   transform: translateX(2px);
 }
@@ -381,12 +390,17 @@ button:disabled {
   color: var(--ink);
 }
 
+.document-button-active {
+  border-color: color-mix(in srgb, var(--nav-active) 34%, var(--line));
+  background: color-mix(in srgb, var(--nav-active-bg) 76%, var(--panel));
+}
+
 .document-button:hover {
   transform: translateX(2px);
 }
 
 .document-button-active {
-  box-shadow: inset 3px 0 0 var(--accent);
+  box-shadow: inset 2px 0 0 var(--nav-active);
 }
 
 .empty-state {
