@@ -1,5 +1,9 @@
 # Chapter 08 File Map — Caching, Materialization, and Invalidation
 
+![Figure: Chapter 08 approval graph](images/00-chapter-file-map-approval-graph.png)
+
+![Figure: Chapter 08 approval graph](images/00-chapter-file-map-approval-graph.png)
+
 ## Reading Order
 
 | Order | File | Owns |

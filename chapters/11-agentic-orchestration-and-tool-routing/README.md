@@ -28,7 +28,7 @@ This chapter closes the loop the book has been building toward: the caller that 
 | [Anthropic, "Building effective agents"](https://www.anthropic.com/research/building-effective-agents) | The workflow-vs-agent discipline; the pattern catalog; the routing/effort-scaling guidance |
 | [Anthropic, "Effective context engineering for AI agents"](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents) | Context as scarce resource; curation, compaction, just-in-time; the rot curve |
 | [Anthropic, "Writing effective tools for agents"](https://www.anthropic.com/engineering/writing-tools-for-agents) | Tool ergonomics as measured engineering; error text as steering |
-| [Anthropic, "How we built our multi-agent research system"](https://www.anthropic.com/engineering/multi-agent-research-system) + [Cognition, "Don't Build Multi-Agents"](https://cognition.ai/blog/dont-build-multi-agents) | The multi-agent debate; the read/write merge criterion; delegation briefs; the 15× token math |
+| [Anthropic, "How we built our multi-agent research system"](https://www.anthropic.com/engineering/multi-agent-research-system) + [Cognition, "Don't Build Multi-Agents"](https://cognition.com/blog/dont-build-multi-agents) | The multi-agent debate; the read/write merge criterion; delegation briefs; the 15× token math |
 | [Yao et al., "ReAct" (2022)](https://arxiv.org/abs/2210.03629) | The reason-act-observe loop's canonical formulation |
 | [Yao et al., "τ-bench" (2024)](https://arxiv.org/abs/2406.12045) | pass^k reliability; outcome-state evaluation |
 | [OWASP Top 10 for LLM Applications (2025)](https://owasp.org/www-project-top-10-for-large-language-model-applications/) | Prompt injection (#1); excessive agency; the security taxonomy |
