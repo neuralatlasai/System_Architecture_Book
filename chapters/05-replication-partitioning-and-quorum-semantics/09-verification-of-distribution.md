@@ -1,5 +1,7 @@
 # Verification of Distribution
 
+![Figure: Verification of distribution](images/09-verification-distribution.png)
+
 ## Abstract
 
 Distribution claims are the least verifiable by inspection and the most falsifiable by experiment of anything in this book: whether fencing actually fences, whether R+W>N actually overlaps under failure, whether the passive region can actually take traffic — none of these is visible in configuration, and all of them are one controlled fault away from a definite answer. This file specifies the evidence regime: Jepsen-class adversarial harnesses as the standard for consistency-under-fault claims (the methodology — generate concurrent operations, inject partitions and pauses, check the recorded history against the claimed model — has falsified documented guarantees in a double-digit list of production systems, [Jepsen analyses](https://jepsen.io/analyses)), the distribution-specific SLI set, and the drill catalog R1–R10 covering the incident shapes files 01–08 predicted, from single-node fencing through full region evacuation. Every result lands in the Chapter 01 file 11 taxonomy with a date and a *topology generation* — because distribution evidence expires when the fleet, the placement, or the map machinery changes, not merely when time passes.

@@ -1,5 +1,7 @@
 # Failure Modes and Degradation
 
+![Figure: Failure modes and degradation](images/08-failure-modes-degradation.png)
+
 ## Abstract
 
 Distribution multiplies the ways a system can be partially wrong, and this file catalogs the failure modes that are *specific to* replication, partitioning, and quorums — each with its detection signature, its blast mechanics, and its pre-declared degradation, in the Chapter 01 file 08 discipline. The catalog is incident-anchored throughout: split brain (GitHub 2018 — dual authority for 43 seconds, reconciliation for 24 hours), consensus-layer collapse (Roblox 2021 — the coordination service as the availability ceiling of everything above it, for 73 hours), failover-onto-lag (the acknowledgment rung's RPO, collected at the worst moment), and the correlated-failure arithmetic that Aurora's quorum design exists to answer ([quorums and correlated failure](https://aws.amazon.com/blogs/database/amazon-aurora-under-the-hood-quorum-and-correlated-failure/)). The file's organizing rule is the chapter's thesis inverted: every mechanism this chapter added — replicas, quorums, maps, regions — is also a new failure surface, and a distribution design is complete only when each surface has a failure row with a named response.

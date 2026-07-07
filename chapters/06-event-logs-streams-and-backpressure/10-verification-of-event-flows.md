@@ -1,5 +1,7 @@
 # Verification of Event Flows
 
+![Figure: Verification of event flows](images/10-verification-event-flows.png)
+
 ## Abstract
 
 Every guarantee this chapter approves is a claim about behavior under failure — ordering under interleaving, idempotence under duplicates, liveness under poison, recovery under crash, alarms under runaway — and none of them can be verified by reading configuration, because the configuration describes the intent and the failures test the implementation. This file is the chapter's evidence machinery: ten drills (E1–E10) that convert each contract from files 01–09 into a falsifiable experiment with a pass condition and a rehearsal frequency, the streaming SLI set that makes the slow-tempo failure modes of file 09 observable while they are still countdowns, and the evidence-classification discipline inherited from Chapter 01 file 11 — each claim tagged tested/observed/assumed with a date and a **flow-generation stamp** (the topic configuration, group protocol, schema versions, and consumer-fleet version the evidence was generated against), because a drill passed against last quarter's topology verifies last quarter's system.

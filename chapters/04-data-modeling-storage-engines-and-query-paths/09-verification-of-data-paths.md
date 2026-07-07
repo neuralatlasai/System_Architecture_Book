@@ -1,5 +1,7 @@
 # Verification of Data Paths
 
+![Figure: Verification of data paths](images/09-verification-data-paths.png)
+
 ## Abstract
 
 Data-path contracts decay along three axes the code never touches: data grows (the bounded query meets the unbounded table), distributions drift (the planner's statistics and the ANN index's geometry both go quietly stale), and background debt accumulates (compaction, vacuum, delete vectors, graph decay). This file specifies the evidence regime that catches all three before users do: plan-shape regression testing that pins the hot paths' plans against production-scale statistics, load evaluation on production-shaped data with the coordinated-omission discipline of Chapter 01 file 02, continuous data-path SLIs (queries-per-request, scan-to-seek ratios, background backlogs, recall@k), and a drill catalog Q1–Q8 that exercises the failure modes files 01–08 predicted. As always, results land in the Chapter 01 file 11 taxonomy with dates — and this chapter adds the taxonomy's sharpest corollary: a query path tested at 1× data volume is `tested` for a system that no longer exists by the time it matters.

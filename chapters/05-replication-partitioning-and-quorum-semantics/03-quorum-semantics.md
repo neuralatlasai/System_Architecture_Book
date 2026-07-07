@@ -1,5 +1,7 @@
 # Quorum Semantics
 
+![Figure: Quorum semantics](images/03-quorum-semantics.png)
+
 ## Abstract
 
 Quorum arithmetic — write to W of N, read from R of N, overlap when R+W>N — is the most misquoted formula in distributed systems, and this file's first job is the honest accounting: overlap guarantees that a read *contacts* a node holding the latest acknowledged write, which is necessary but not sufficient for linearizability (concurrent read-write races and partially failed writes both produce anomalies inside R+W>N unless reads repair synchronously and writes round versions correctly — a gap [Jepsen analyses](https://jepsen.io/analyses) have demonstrated against production stores repeatedly). The second job is the design space beyond the formula: Dynamo's deliberate weakening (sloppy quorums and hinted handoff trade the overlap guarantee itself for write availability during failures — [SOSP 2007](https://www.allthingsdistributed.com/2007/10/amazons_dynamo.html)) and Aurora's deliberate strengthening (an asymmetric 6-copy/3-AZ design with W=4, R=3, sized not for node failure but for *correlated* AZ failure plus an independent node — ["quorums and correlated failure"](https://aws.amazon.com/blogs/database/amazon-aurora-under-the-hood-quorum-and-correlated-failure/)), which together bracket what quorum design actually is: choosing a failure model first and deriving the arithmetic from it.

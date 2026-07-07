@@ -1,5 +1,7 @@
 # Chapter 05 File Map
 
+![Figure: Chapter 05 file map approval dependency graph](images/00-chapter-file-map-approval-graph.png)
+
 ## Purpose
 
 Chapters 03 and 04 fixed what must be true of state — ownership, consistency claims, isolation, recovery budgets — and how it is laid out per store. This chapter distributes it, and inherits the root thesis with no discount: distribution improves capacity only when partition ownership, replication lag, quorum reads/writes, rebalancing, and conflict handling are explicit; undocumented consistency behavior becomes a latent correctness defect. Every mechanism in this chapter is the delivery vehicle for a contract signed earlier — replication delivers Chapter 03's consistency claims across copies, partitioning delivers Chapter 04's layout across machines, and consensus delivers Chapter 03's single arbiter — which is why every file here cites the contract it implements rather than inventing a new one.

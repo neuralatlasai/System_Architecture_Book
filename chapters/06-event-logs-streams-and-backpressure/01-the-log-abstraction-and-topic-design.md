@@ -1,5 +1,7 @@
 # The Log Abstraction and Topic Design
 
+![Figure: Log abstraction and topic design](images/01-log-abstraction-topic-design.png)
+
 ## Abstract
 
 The append-only log is the simplest storage abstraction that solves three distributed-systems problems at once — ordering, durability-for-replay, and producer/consumer decoupling — which is why Kreps' argument that the log is the unifying abstraction beneath databases, replication, and stream processing ([LinkedIn Engineering](https://engineering.linkedin.com/distributed-systems/log-what-every-software-engineer-should-know-about-real-time-datas-unifying)) has held up for over a decade of production systems built on it. The brutal part the pitch omits: every one of those gifts is scoped to a *partition*, and the partition is chosen by a key hash fixed at produce time. The partition key is therefore not a tuning parameter — it is the ordering contract of the entire downstream system, it is nearly impossible to change without a full topic migration, and the single most expensive class of streaming defect in this chapter traces back to a key chosen for load distribution when the consumers needed it for ordering (or vice versa). This file prices the log honestly: what it buys, what topic/partition/key design decides irrevocably, and the arithmetic that must precede the first produced event.

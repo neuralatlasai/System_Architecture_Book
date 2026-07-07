@@ -1,5 +1,7 @@
 # Chapter 06 File Map
 
+![Figure: Chapter 06 approval graph](images/00-chapter-file-map-approval-graph.png)
+
 ## Purpose
 
 Logs provide replayable ordering, recovery, and decoupling — and they also introduce offset ownership, consumer lag, duplicate delivery, poison events, and retention constraints, with backpressure as a first-class control path rather than an operational afterthought. That is the root thesis this chapter implements. The log has already appeared in this book three times in supporting roles: as the CDC/outbox propagation machinery of Chapter 03 file 05, as the offset-commit delivery semantics of Chapter 01 file 07 §8, and as the per-partition leadership instance of Chapter 05. This chapter makes it the subject: topic and partition design, delivery semantics as an end-to-end property, consumer-group mechanics, flow control, poison handling, stateful stream processing, retention as a multi-party contract, and event schema governance across team boundaries.

@@ -1,5 +1,7 @@
 # Event Flow Review Templates
 
+![Figure: Event flow review dossier](images/11-event-flow-review-dossier.png)
+
 ## Abstract
 
 This file assembles the chapter into its executable form: the dossier a team completes to put an event flow — producer to final side effect — in front of an architecture review, and the checklist the reviewer walks to approve it. The dossier's organizing principle is the chapter's root thesis made procedural: every section forces a *written answer* to a question the log otherwise lets a team defer — who needs this ordering, who absorbs these duplicates, who slows this producer, who owns this DLQ, how long is this history really needed, who reads this schema — because in event-driven systems the expensive defects are exactly the deferred answers, discovered at retention edges and replay time. A dossier section answered "N/A" is legitimate; a section answered vaguely is a finding. Evidence citations must satisfy file 10's stamp discipline: dated, flow-generation-stamped, and no older than the topology they describe.

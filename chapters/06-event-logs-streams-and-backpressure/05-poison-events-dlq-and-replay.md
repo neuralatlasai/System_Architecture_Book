@@ -1,5 +1,7 @@
 # Poison Events, DLQ, and Replay
 
+![Figure: Poison events, DLQ, and replay](images/05-poison-events-dlq-replay.png)
+
 ## Abstract
 
 A poison event — one record the consumer cannot process — is a partition-level denial of service in a keyed log: the consumer cannot skip it without violating ordering, cannot process it, and so retries it forever while every record behind it in the partition ages toward retention expiry. The naive responses bracket the failure space: retry-forever converts one bad record into a stalled partition; skip-and-log converts it into silent data loss with an audit trail nobody reads. The engineered middle is a *graduated* path — bounded in-place retries for transient faults, retry topics with escalating backoff for slow-to-heal faults, and a dead-letter queue as the terminal parking lot — with the discipline Uber's reprocessing architecture made canonical: retry queues are tiered by delay, DLQ entries carry full diagnostic envelopes, and re-injection back into the main flow is a designed path, not an ops improvisation ([Uber Engineering](https://www.uber.com/blog/reliable-reprocessing/)). The brutal-truth core of this file: a DLQ without an owner, an SLO, and a replay procedure is not error handling — it is a slow-motion drop with better logging, and the review must price it as exactly that.

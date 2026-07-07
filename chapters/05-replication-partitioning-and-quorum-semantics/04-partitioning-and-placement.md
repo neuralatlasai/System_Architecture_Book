@@ -1,5 +1,7 @@
 # Partitioning and Placement
 
+![Figure: Partitioning and placement](images/04-partitioning-placement.png)
+
 ## Abstract
 
 Partitioning divides a keyspace into ownership units; placement assigns those units to machines; and the artifact that records both — the partition map — is a control-plane state item with a single consensus-backed writer, distributed to the data plane as a versioned snapshot, exactly per the Chapter 02 machinery. This file specifies the three partitioning schemes with their query-shape consequences (hash for uniform point access, range for ordered scans at the price of hotspot risk, directory for the flexibility that pays in map complexity), consistent hashing and virtual nodes as the placement mathematics that bound movement under membership change ([Karger et al., 1997](https://dl.acm.org/doi/10.1145/258533.258660)), and the two problems that dominate partitioned systems in practice long after the scheme is chosen: secondary indexes that must be either local (scatter-gather reads) or global (distributed-write costs), and request routing that must never let a stale map produce a silent wrong answer.

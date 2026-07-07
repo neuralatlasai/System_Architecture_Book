@@ -1,5 +1,7 @@
 # Rebalancing and Resharding
 
+![Figure: Rebalancing and resharding](images/05-rebalancing-resharding.png)
+
 ## Abstract
 
 Rebalancing moves partitions between machines; resharding changes the partition boundaries themselves — and both are Chapter 03 file 07's migration discipline executed against live traffic, with the partition map as the schema being migrated. This file specifies the movement budget (rebalancing competes with serving for I/O, network, and cache warmth, so it is admission-controlled background work in the Chapter 04 file 02 sense), the shard-count arithmetic that decides whether future rebalancing is cheap partition-movement or expensive boundary-surgery (Notion's 480-logical-shards-on-32-hosts choice — divisible by 2,3,4,5,6,8,10… — is shard-count design done in advance of the need; [sharding Postgres at Notion](https://www.notion.com/blog/sharding-postgres-at-notion)), and the live-resharding protocol whose production reference is Vitess's VReplication: copy the new shards from a snapshot, tail the source's changes to convergence, verify row-for-row, then cut over ownership with a fenced, reversible switch ([Vitess resharding](https://vitess.io/docs/faq/sharding/overview/what-is-resharding-how-does-it-work/)).

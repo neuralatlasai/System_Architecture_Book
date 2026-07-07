@@ -1,5 +1,7 @@
 # Event Schema Governance and Evolution
 
+![Figure: Event schema governance and evolution](images/08-event-schema-governance-evolution.png)
+
 ## Abstract
 
 An event schema is an API with three properties that make it *harder* to govern than a request/response contract: the producer cannot see its consumers (fan-out is open-ended by design), the consumers cannot negotiate (there is no per-request version header — the record on the log is what it is), and retention makes every version ever produced *permanently readable* (a 90-day-retention topic means every consumer must handle 90 days of schema archaeology; an event-sourced topic means forever, file 07 §4). Schema-registry governance — producers validated against a compatibility rule *before* a record reaches the log ([Confluent Schema Registry's compatibility model](https://docs.confluent.io/platform/current/schema-registry/fundamentals/schema-evolution.html)) — is the enforcement machinery, and this file's core discipline is reading its modes correctly: compatibility direction is about *who upgrades first*, the default (BACKWARD) is non-transitive and therefore weaker than most teams assume, and under log retention the honest baseline for shared topics is transitive FULL compatibility, because "the consumer will be upgraded before it sees old data" is exactly the assumption replay (file 05) violates. This is Chapter 03 file 07's migration matrix transposed to events, with the deployment-order theorems inverted by the log's persistence.

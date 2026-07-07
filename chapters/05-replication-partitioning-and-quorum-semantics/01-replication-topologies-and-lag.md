@@ -1,5 +1,7 @@
 # Replication Topologies and Lag
 
+![Figure: Replication topologies and lag](images/01-replication-topologies-lag.png)
+
 ## Abstract
 
 Replication is the purchase of availability and read capacity with copies, and every topology is defined by two decisions it cannot dodge: who may accept writes (one leader, several leaders, or any replica), and what an acknowledgment means (which copies must be durable before the client hears "committed"). This file specifies the three topology families with the failure mode each one signs up for, the acknowledgment ladder as the mechanism that converts replication configuration into RPO fact (Chapter 03 file 08's budget, delivered or not delivered right here), and lag as what it actually is — a per-replica distribution with a tail, not a scalar on a dashboard. The framing debt is to [Kleppmann's *DDIA* replication treatment](https://dataintensive.net/): the problems of replication are not exotic — they are exactly three (leader failure, replication lag, and concurrent writes), and every topology is a different distribution of those three problems among clients, operators, and reconciliation jobs.

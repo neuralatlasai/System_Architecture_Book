@@ -1,5 +1,7 @@
 # Chapter 06: Event Logs, Streams, and Backpressure
 
+![Figure: Event flow contract overview](images/README-event-flow-contract-overview.png)
+
 ## Abstract
 
 Logs provide replayable ordering, recovery, and decoupling — and they introduce offset ownership, consumer lag, duplicate delivery, poison events, and retention constraints, with backpressure as a first-class control path rather than an operational afterthought. This chapter is where the book's storage discipline crosses team boundaries: the log is the transport of Chapter 03's derived-state DAG and the delivery mechanism between systems that Chapters 01–05 designed individually, and its guarantees are systematically weaker than teams assume. Ordering is scoped to a partition key chosen once and nearly unchangeable; delivery is at-least-once with "exactly-once" available only as a transactional or idempotence discipline that ends at every external boundary; the decoupling the log sells is a retention window, not an exemption from capacity arithmetic; and every deferred question — who slows the producer, who owns the DLQ, how long is history really needed, who reads this schema — converts into loss at retention edges and replay time.

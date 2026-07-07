@@ -1,5 +1,7 @@
 # Multi-Region and Conflict Handling
 
+![Figure: Multi-region and conflict handling](images/06-multi-region-conflict-handling.png)
+
 ## Abstract
 
 Multi-region architecture is the point where physics stops negotiating: cross-region round trips cost tens of milliseconds, so every design is a position on one axis — where writes are accepted — and every position pays a different bill. Single-region-writer pays latency for remote writers and an RTO for region failover; active-active pays with a permanent conflict-handling obligation, because two regions accepting writes to the same key *will* produce concurrent versions, and the resolution semantics — last-writer-wins discarding data by clock luck, version vectors surfacing siblings, CRDTs merging by construction, or consensus preventing conflicts by paying quorum latency on every write — are the actual product decision hiding inside the topology diagram. This file specifies the topologies with their honest bills, the conflict-resolution menu (Chapter 03 files 01 §5 and 04 §4, now with geography), and the strong option's true shape: Spanner's TrueTime demonstrates that external consistency across regions is purchasable — with bounded-uncertainty clocks, commit-wait, and Paxos on every write — which mostly proves how expensive the purchase is ([Spanner, OSDI 2012](https://docs.cloud.google.com/spanner/docs/true-time-external-consistency)).

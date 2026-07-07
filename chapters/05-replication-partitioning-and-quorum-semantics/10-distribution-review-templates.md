@@ -1,5 +1,7 @@
 # Distribution Review Templates
 
+![Figure: Distribution review dossier compiler](images/10-distribution-review-dossier.png)
+
 ## Abstract
 
 This file collects the executable artifacts of Chapter 05: the per-store replication register, the consensus and coordination-service inventory, the quorum geometry worksheet, the partition-map contract, the resharding runbook skeleton, the region topology register, the replica-read delivery matrix, and the drill checklist. Every field is defined and justified in files 01–09; this file adds no new policy. A blank field here is a finding with a specific personality: it is usually a guarantee that exists in configuration and has never existed in behavior.

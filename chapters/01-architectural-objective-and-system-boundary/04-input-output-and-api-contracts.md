@@ -208,7 +208,7 @@ Cursor pagination must specify: cursor opacity, cursor expiry, sort key, snapsho
 
 ## Output
 
-The output of this file is a machine-readable API contract with precise mutation, retry, timeout, status, streaming, pagination, compatibility, and error semantics — one under which a retry is provably safe or provably forbidden, never a gamble.
+The output of this file is a machine-readable API contract with precise mutation, retry, timeout, status, streaming, pagination, compatibility, and error semantics — one under which a retry is provably safe or provably forbidden, never a gamble. This file owns *that* these contract fields exist at the boundary; [Chapter 07](../07-api-contracts-and-request-lifecycle/README.md) owns *how* each one is engineered — the artifact pipeline, timeout budgets, idempotency machinery, error taxonomy, versioning, and the streaming/LRO/AI lifecycles in full depth.
 
 ## References
 

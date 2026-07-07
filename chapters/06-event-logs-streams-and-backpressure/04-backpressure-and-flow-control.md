@@ -1,5 +1,7 @@
 # Backpressure and Flow Control
 
+![Figure: Backpressure and flow control](images/04-backpressure-flow-control.png)
+
 ## Abstract
 
 Backpressure is not an error condition; it is the mechanism by which a pipeline tells the truth about its capacity. Every stage of every dataflow has a finite processing rate, and when an upstream rate exceeds it, exactly one of three things absorbs the difference: a bounded buffer (delay), load shedding (loss), or an unbounded buffer (an outage on a timer — the queue grows until memory, disk, or retention kills something, and by then the backlog itself has become the incident, as the AWS Builders' Library analysis of insurmountable queue backlogs lays out ([Builders' Library](https://aws.amazon.com/builders-library/avoiding-insurmountable-queue-backlogs/))). This file instantiates Chapter 01 file 08's overload contract for streaming: the design rule that **every buffer is bounded and every bound has a declared overflow behavior**, the pull/credit mechanics that make rate mismatch propagate as signal rather than accumulate as backlog (Reactive Streams' demand model ([reactive-streams.org](https://www.reactive-streams.org/)); Flink's credit-based network flow control ([Flink deep dive](https://flink.apache.org/2019/06/05/a-deep-dive-into-flinks-network-stack/))), and the endpoint question most streaming designs never answer: when the log itself is the buffer and the consumer is the bottleneck, *who slows the producer down?*

@@ -99,7 +99,7 @@ The forcing question is RUM mismatch: a full-text pattern on an OLTP B-tree, an 
 
 ## Output
 
-The output of this file is a read-model portfolio where every projection is justified by a measured budget failure, owned by exactly one projector, wired into the derivation DAG with lag and rebuild evidence, and honest with its readers about how old its answers are.
+The output of this file is a read-model portfolio where every projection is justified by a measured budget failure, owned by exactly one projector, wired into the derivation DAG with lag and rebuild evidence, and honest with its readers about how old its answers are. The cache/view engineering this file defers — invalidation mechanics, TTL derivation, stampede control, and the maintenance ladder up to automatic IVM — is [Chapter 08](../08-caching-materialization-and-invalidation/README.md).
 
 ## References
 

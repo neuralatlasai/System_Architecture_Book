@@ -1,5 +1,7 @@
 # Data-Path Review Templates
 
+![Figure: Data-path review dossier compiler](images/10-data-path-review-dossier.png)
+
 ## Abstract
 
 This file collects the executable artifacts of Chapter 04: the access-pattern matrix, the amplification budgets, the index portfolio ledger, the query contracts, the read-model register, the analytical-path and vector-path addenda, the engine rubric, and the drill checklist. Every field is defined and justified in files 01–09; this file adds no new policy. A blank field is a finding — and in this chapter, a blank field is usually a scan, a flip, or a hot partition whose date of arrival is set by the data's growth curve rather than by anyone's decision.

@@ -1,5 +1,7 @@
 # Chapter 05: Replication, Partitioning, and Quorum Semantics
 
+![Figure: Distribution contract overview](images/README-distribution-contract-overview.png)
+
 ## Abstract
 
 Distribution improves capacity only when partition ownership, replication lag, quorum reads/writes, rebalancing, and conflict handling are explicit — undocumented consistency behavior becomes a latent correctness defect. This chapter is the delivery layer for everything Chapters 03 and 04 contracted: replication topologies and acknowledgment rungs that turn RPO budgets into configuration, consensus deployed exactly where Chapter 03's single-arbiter rule demanded it and kept off every path that merely wanted a fast answer, quorum geometry derived from correlated failure models rather than the R+W>N folklore, partition maps as fenced control-plane state with one consensus-backed writer, resharding as a seven-phase migration with rollback armed before cutover, multi-region topologies whose conflict semantics are product decisions made in daylight, and replica reads that deliver each declared consistency claim through named mechanisms with violation SLIs.

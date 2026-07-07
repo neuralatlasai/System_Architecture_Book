@@ -1,5 +1,7 @@
 # Consensus and Coordination Services
 
+![Figure: Consensus and coordination services](images/02-consensus-coordination-services.png)
+
 ## Abstract
 
 Consensus is the mechanism that makes a group of machines act as one authority — the single arbiter Chapter 03 file 01 demanded for authority transfer and Chapter 03 file 04 demanded for correctness-grade locks. This file specifies what consensus actually buys (a replicated log with a single total order, from which leader election, fencing epochs, and linearizable state machines all derive), the Raft mechanics that made the property implementable by mortals ([Ongaro & Ousterhout](https://raft.github.io/raft.pdf) — designed explicitly for understandability after a decade of Paxos being correctly specified and incorrectly implemented), and the discipline for operating coordination services, whose defining risk is not subtlety but blast radius: when everything routes its authority questions through one consensus cluster, that cluster is the system's availability, as Roblox demonstrated for 73 hours when Consul — serving as service discovery, health checking, *and* feature-flag store — degraded under a streaming-feature contention bug plus a BoltDB pathology, and everything above it went down together ([Roblox postmortem](https://about.roblox.com/newsroom/2022/01/roblox-return-to-service-10-28-10-31-2021)).

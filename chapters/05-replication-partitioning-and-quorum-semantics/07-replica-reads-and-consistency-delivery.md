@@ -1,5 +1,7 @@
 # Replica Reads and Consistency Delivery
 
+![Figure: Replica reads and consistency delivery](images/07-replica-reads-consistency-delivery.png)
+
 ## Abstract
 
 Chapter 03 file 02 priced consistency claims per read path; this file is where each claim is *delivered* over a fleet of lagging replicas — the mechanism catalog that turns "read-your-writes" from a checkbox into routing logic, tokens, and gates. The delivery instruments are few and composable: sticky routing (pin a session's reads to a replica that has its writes), causality tokens (carry the write's LSN/timestamp and gate reads on it), leader reads (pay the leader's capacity for the strongest claims), and follower reads with explicit staleness (CockroachDB's exact- and bounded-staleness reads are the current state of the art in making the trade *queryable* — the client states its staleness tolerance and the system picks the newest safe timestamp within it, [bounded staleness reads](https://www.cockroachlabs.com/blog/bounded-staleness-reads/)). The file's premise, brutal and structural: every replica read is a consistency decision made at routing time, and a load balancer that round-robins reads across replicas without consulting the path's claim is making that decision randomly, per request, forever.
