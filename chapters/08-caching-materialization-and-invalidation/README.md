@@ -1,5 +1,7 @@
 # Chapter 08 — Caching, Materialization, and Invalidation
 
+![Figure: Cache correctness overview](images/README-cache-correctness-overview.png)
+
 ## Abstract
 
 This chapter's claim is that a cache is never an implementation detail: it is derived state making a consistency promise, occupying memory with an economic argument, and holding up an origin that may no longer survive without it — and all three facts are routinely left undesigned because the cache "worked" the day it was added. The chapter builds the discipline in layers: an admission decision that names when caching is the wrong tool; a seven-field correctness contract per entry class; a placement theory with the composition law (staleness *adds* across layers, origin protection *multiplies*); key construction as referential transparency with tenancy and authorization inside the closure; TTLs derived from written reader tolerances rather than folklore; invalidation as an explicit, log-sourced, *measured* coherence protocol; stampede and metastability physics with the cold-cache arithmetic that turns "just an optimization" into a 20× origin event; eviction chosen by trace evidence with the FIFO-family research frontier weighed honestly; materialized views as caches with maintenance plans on the refresh-to-IVM ladder; and the AI-native classes — KV/prefix, semantic, embedding, verdict — where the cached bytes are the most expensive in the industry and version closure is existential. Hit ratio appears in this chapter only in restated form: as a miss ratio, with an origin-load consequence.

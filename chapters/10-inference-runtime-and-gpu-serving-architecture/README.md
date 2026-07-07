@@ -82,7 +82,7 @@ Stated honestly, per this chapter's standard: **(1) Deterministic serving at pro
 
 ## Final Position
 
-A serving fleet is a machine for turning capital expenditure into tokens under promises, and this chapter's discipline is that every link in that conversion — bytes moved, iterations composed, precision chosen, GPUs pooled, requests routed — is derived, gated, and stamped rather than benchmarked into folklore. The seam forward: this chapter produced tokens under contract; Chapter 11 turns to the loops that *consume* them — agentic orchestration and tool routing, where the model's output becomes the system's next input, episode budgets meet tool schemas, and every contract this book has built gets exercised by a caller that iterates at machine speed.
+A serving fleet is a machine for turning capital expenditure into tokens under promises, and this chapter's discipline is that every link in that conversion — bytes moved, iterations composed, precision chosen, GPUs pooled, requests routed — is derived, gated, and stamped rather than benchmarked into folklore. The seam forward: this chapter produced tokens under contract; [Chapter 11](../11-agentic-orchestration-and-tool-routing/README.md) turns to the loops that *consume* them — agentic orchestration and tool routing, where the model's output becomes the system's next input, episode budgets meet tool schemas, and every contract this book has built gets exercised by a caller that iterates at machine speed.
 
 ## References
 
