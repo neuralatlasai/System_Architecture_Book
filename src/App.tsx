@@ -472,14 +472,6 @@ function BookReader({ book }: BookReaderProps): JSX.Element {
               onToggleSections={() => setIsSectionsOpen((current) => !current)}
             />
 
-            <aside
-              aria-label="Article sections"
-              className={`section-pane ${isSectionsOpen ? "section-pane-open" : ""}`}
-              id="article-sections"
-            >
-              <SectionTravel activeSectionId={activeSectionId} document={selectedDocument} onNavigate={navigateToDocument} />
-            </aside>
-
             {selectedDocument.coverImage ? (
               <figure className="article-hero-media">
                 <img alt={`${selectedDocument.title} visual overview`} decoding="async" loading="eager" src={selectedDocument.coverImage} />
@@ -491,6 +483,14 @@ function BookReader({ book }: BookReaderProps): JSX.Element {
             <DocumentTravel previousDocument={previousDocument} nextDocument={nextDocument} onNavigate={navigateToDocument} />
           </article>
         </main>
+
+        <aside
+          aria-label="Article sections"
+          className={`section-pane ${isSectionsOpen ? "section-pane-open" : ""}`}
+          id="article-sections"
+        >
+          <SectionTravel activeSectionId={activeSectionId} document={selectedDocument} onNavigate={navigateToDocument} />
+        </aside>
       </div>
     </div>
   );
@@ -648,7 +648,7 @@ function ArticleHeader({
             aria-controls="article-sections"
             aria-expanded={sectionsOpen}
             aria-label="Open article sections"
-            className="icon-button"
+            className="icon-button article-section-toggle"
             disabled={!hasSections}
             title="Article sections"
             type="button"
