@@ -1,5 +1,7 @@
 # Verification of Admission and Scheduling
 
+![Figure: Verification of admission and scheduling](images/10-verification-admission-scheduling.png)
+
 ## Abstract
 
 Admission machinery has the cruelest verification profile in this book: it is *only* exercised by the conditions it exists to survive, so an untested shedding path is best assumed absent, an unmeasured goodput curve is best assumed collapsing, and a load test that self-throttles (closed-loop) certifies nothing about the open-loop internet. This file is the chapter's evidence machinery: ten drills (W1–W10) converting each file's gates into falsifiable experiments — with the **open-loop generation requirement** stated once and binding all of them (offered load must be independent of system response, or the test hides the cliff it exists to find: file 02 §1's envelope condition, made procedural) — the admission SLI set that watches the same promises between drills, and the evidence-stamp discipline from Chapter 01 file 11 with this chapter's invalidator: every result carries a **load-model stamp** `{workload mix + arrival process (measured C_a², request-cost distribution), capacity generation (fleet size/HW), limit & policy config versions, dependency topology}` — a goodput curve measured against last quarter's traffic shape or fleet is last quarter's evidence, and capacity-affecting changes (fleet resize, engine upgrade, new heavy work class) reset it to *assumed*.

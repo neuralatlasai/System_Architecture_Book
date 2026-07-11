@@ -59,4 +59,4 @@ The output of this file is a context and memory design under budget and contract
 - [Anthropic, "Effective context engineering for AI agents" — curation, compaction, just-in-time context](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)
 - [Chapter 03 file 09 — AI-native state: the ownership/retention/deletion machinery memory inherits](../03-state-ownership-and-consistency-model/09-ai-native-state.md)
 - [Chapter 08 file 09 — prefix-cache economics: why the ledger's ordering is a bill](../08-caching-materialization-and-invalidation/09-ai-native-caching.md)
-- [Chapter 12 (seam) — retrieval and grounding: the pipeline this file consumes per need](../../README.md)
+- [Chapter 12 — retrieval and grounding: the pipeline this file consumes per need](../12-retrieval-memory-and-grounding-architecture/README.md)

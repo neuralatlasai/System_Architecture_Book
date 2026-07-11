@@ -1,5 +1,7 @@
 # Cache Placement and the Layer Topology
 
+![Figure: Cache placement and layer topology](images/02-cache-placement-layer-topology.png)
+
 ## Abstract
 
 Real systems do not have "a cache"; they have a *stack* of them — browser and SDK caches, CDN points of presence, gateway response caches, service-level look-aside caches, in-process memoization, and the storage engine's own buffer pool — and most cache incidents are not failures of any single layer but of the *composition*: staleness bounds that add up across layers into an end-to-end window nobody declared, invalidations that reach some layers and not others, and debugging sessions that cannot say which of six layers served the wrong byte. This file owns placement — which layer a given entry class belongs to, decided by where the reuse is shared and how invalidation reaches it — and states the chapter's **composition law**: for layered caches, worst-case end-to-end staleness is the *sum* of per-layer staleness bounds along the serving path (each layer can hand a maximally stale value to the layer above just before expiry), while origin protection *multiplies* (the origin sees the product of layer miss ratios). Both compositions are computed in the dossier, not discovered in production. The HTTP layers run on standardized semantics ([RFC 9111](https://www.rfc-editor.org/rfc/rfc9111.html)): `Cache-Control` is the *origin's contract with every cache it will never meet*, which makes the header a reviewed artifact of Chapter 07's contract discipline, not a config knob.

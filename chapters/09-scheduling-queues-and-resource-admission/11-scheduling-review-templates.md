@@ -1,5 +1,7 @@
 # Scheduling Review Templates
 
+![Figure: Scheduling review dossier](images/11-scheduling-review-dossier.png)
+
 ## Abstract
 
 This file assembles the chapter into its executable form: the dossier a team completes to put an admission-and-scheduling design — intake verdicts to collapse exits — in front of an architecture review, and the checklist the reviewer walks to approve it. The organizing principle is the chapter's root thesis made procedural: every buffer, limit, and priority in a system is a decision *something* made — the framework default, the memory allocator, or the design — and each dossier section forces the written answer where physics would otherwise decide: is this work queued or shed and by what arithmetic, at what utilization does this fleet run and what latency does that purchase, in what order does overload consume the business's quality budget, who gets capacity when tenants collide, and how does the system exit the collapse loop its own retries can sustain. Evidence citations must satisfy file 10's stamp discipline: dated, load-model-stamped, open-loop where load-generated, and rehearsed where only a game day can produce them.

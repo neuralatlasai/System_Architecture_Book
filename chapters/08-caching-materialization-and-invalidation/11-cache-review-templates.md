@@ -1,5 +1,7 @@
 # Cache Review Templates
 
+![Figure: Cache review dossier](images/11-cache-review-dossier.png)
+
 ## Abstract
 
 This file assembles the chapter into its executable form: the dossier a team completes to put a cache design — admission verdict to eviction policy to kill-cache number — in front of an architecture review, and the checklist the reviewer walks to approve it. The organizing principle is the chapter's root thesis made procedural: a cache has behavior in seven dimensions whether or not anyone designed it, so every dossier section forces a written answer where the default would otherwise decide — is this cache even the right tool, what exactly is in the key, how stale is legal end-to-end, what retires an entry at every layer holding it, what happens at expiry under concurrency, what deserves the memory, and what happens when the whole tier disappears. Evidence citations must satisfy file 10's stamp discipline: dated, cache-generation-stamped, standing where monitors can carry them, and rehearsed where only a game day can.

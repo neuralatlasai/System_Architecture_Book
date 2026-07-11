@@ -1,5 +1,7 @@
 # Chapter 09 File Map — Scheduling, Queues, and Resource Admission
 
+![Figure: Chapter 09 approval graph](images/00-chapter-file-map-approval-graph.png)
+
 ## Reading Order
 
 | Order | File | Owns |

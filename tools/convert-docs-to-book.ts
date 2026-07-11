@@ -28,8 +28,9 @@ interface RenderHeading {
 interface RenderEnvironment {
   readonly sourcePath: string;
   readonly headings: RenderHeading[];
-  readonly images: string[];
   readonly headingCounts: Map<string, number>;
+  readonly seenImages: Set<string>;
+  readonly coverImage?: string;
 }
 
 interface BookDocument {
@@ -442,6 +443,7 @@ function configureMarkdownRenderer(fileToDocumentId: ReadonlyMap<string, string>
   markdown.renderer.rules.image = (tokens, index, options, env: RenderEnvironment, self) => {
     const token = tokens[index];
     const rawSrc = token.attrGet("src");
+    let renderedSrc = rawSrc ?? "";
 
     if (rawSrc && !isExternalUrl(rawSrc)) {
       const { pathname, suffix } = splitUrl(rawSrc);
@@ -449,11 +451,16 @@ function configureMarkdownRenderer(fileToDocumentId: ReadonlyMap<string, string>
       const publicPath = copyAsset(resolvedPath);
 
       if (publicPath.length > 0) {
-        const rewrittenSrc = `${publicPath}${suffix}`;
-        token.attrSet("src", rewrittenSrc);
-        env.images.push(rewrittenSrc);
+        renderedSrc = `${publicPath}${suffix}`;
+        token.attrSet("src", renderedSrc);
       }
     }
+
+    if (renderedSrc.length === 0 || renderedSrc === env.coverImage || env.seenImages.has(renderedSrc)) {
+      return "";
+    }
+
+    env.seenImages.add(renderedSrc);
 
     token.attrSet("loading", "lazy");
     token.attrSet("decoding", "async");
@@ -508,7 +515,7 @@ function rewriteHref(
 }
 
 function sanitizeRenderedHtml(input: string): string {
-  return sanitizeHtml(input, {
+  const sanitized = sanitizeHtml(input, {
     allowedTags: [
       "a",
       "blockquote",
@@ -561,6 +568,8 @@ function sanitizeRenderedHtml(input: string): string {
     },
     allowProtocolRelative: false,
   });
+
+  return sanitized.replace(/<p>\s*<\/p>/g, "");
 }
 
 function buildContent(): BookContent {
@@ -585,8 +594,9 @@ function buildContent(): BookContent {
     const renderEnvironment: RenderEnvironment = {
       sourcePath: sourceDocument.sourcePath,
       headings: [],
-      images: [],
       headingCounts: new Map(),
+      seenImages: new Set(),
+      coverImage,
     };
     const html = sanitizeRenderedHtml(markdown.render(renderedMarkdownText, renderEnvironment));
     const chapterEntry =

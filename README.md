@@ -1,8 +1,24 @@
 # System Architecture Book
 
-Principal Scientist orientation for production-grade data-intensive, AI-native, and distributed systems architecture.
+**A Principal-Scientist-level treatment of production-grade data-intensive, AI-native, and distributed systems architecture — complete in fifteen chapters.**
 
+## What This Book Is
 
+This is a working architect's reference, not a survey. Its thesis is a single sentence carried through every chapter: **an architecture is a set of contracts, and a system is acceptable for production only when every contract is concrete enough to build, quantified enough to reason about, observable enough to check, reliable enough to survive its own failures, and defensible enough to withstand an adversary — with evidence, at every layer, that proves it rather than asserts it.**
+
+Each chapter takes one architectural concern from its first principles to its production edge: it draws the boundary, states the formal model, quantifies the cost with worked arithmetic, admits when *not* to use the machinery, judges the current research frontier with an explicit adoption verdict, and ends with approval gates that can *fail* a design. The treatment is uniformly AI-native — every discipline is re-derived for LLM inference, agents, and retrieval, not bolted on — because the hardest production systems today are the ones where a GPU-second is the expensive byte, a confident wrong answer returns a 200, and an untrusted document shares the model's instruction channel.
+
+## The Arc
+
+The fifteen chapters compose into five movements:
+
+- **Foundations (1–3)** — the objective and boundary, the control/data-plane split, and state ownership: what the system *is* and who owns what.
+- **Data & distribution (4–6)** — storage engines and query paths, replication and quorum, event logs and backpressure: how data is laid out, distributed, and moved.
+- **The request path (7–9)** — API contracts, caching and materialization, scheduling and admission: how work enters, is served cheaply, and is protected under load.
+- **The AI serving stack (10–12)** — inference runtime and GPU serving, agentic orchestration, retrieval and grounding: how models, agents, and knowledge are served correctly and affordably.
+- **The operational trilogy (13–15)** — reliability and failure domains, observability and verification, security and governance: how the whole survives its own failures, proves it is working, and withstands an adversary — the three chapters that decide whether any of the prior twelve reaches a user.
+
+Read in order, the seams are explicit (each chapter opens the next); read as a reference, each chapter is self-contained with its prerequisites cited.
 
 ## Chapter Index
 
@@ -19,10 +35,26 @@ Principal Scientist orientation for production-grade data-intensive, AI-native, 
 | 9 | [Scheduling, Queues, and Resource Admission](chapters/09-scheduling-queues-and-resource-admission/README.md) | Admission control protects the system by rejecting or delaying work before shared resources saturate. Queue depth, priority policy, fairness, cancellation, retry backoff, and deadline propagation determine tail latency under load. |
 | 10 | [Inference Runtime and GPU Serving Architecture](chapters/10-inference-runtime-and-gpu-serving-architecture/README.md) | Model serving must separate tokenizer path, prefill, decode, KV-cache allocation, batching, streaming, backpressure, and placement. TTFT, TPOT, memory bandwidth, cache fragmentation, and concurrency limits define the real capacity envelope. |
 | 11 | [Agentic Orchestration and Tool Routing](chapters/11-agentic-orchestration-and-tool-routing/README.md) | Agent loops require bounded phases: observe, plan, act, verify, repair, finalize. Tool access must define schema, timeout, retry policy, validation, fallback, and security boundary; speculative tool calls create cost, latency, and trust failures. |
-| 12 | Retrieval, Memory, and Grounding Architecture | RAG quality depends on ingestion, parsing, chunking, metadata, embedding choice, index structure, retrieval strategy, reranking, context packing, citation policy, and freshness guarantees. Memory writes require explicit privacy and deletion policy. |
-| 13 | Reliability, Recovery, and Failure Domains | Failure handling must cover malformed input, model error, tool timeout, queue saturation, retry storm, stale index, schema drift, and deployment regression. Detection, mitigation, rollback, and degraded operation must be documented per failure class. |
-| 14 | Observability, Profiling, and Verification | Production readiness requires metrics, structured logs, traces, alerts, load tests, regression tests, failure-injection tests, and profiling hooks. Measure p50/p95/p99 latency, queue wait, TTFT, TPOT, error rate, retry rate, cache hit ratio, resource saturation, and quality regressions. |
-| 15 | Security, Deployment, and Operational Governance | Trust boundaries must cover identity, tenant isolation, secret handling, data retention, audit logs, network policy, model/tool permissions, supply-chain integrity, and rollback strategy. Deployment is acceptable only when observability and recovery paths are already verified. |
+| 12 | [Retrieval, Memory, and Grounding Architecture](chapters/12-retrieval-memory-and-grounding-architecture/README.md) | RAG quality depends on ingestion, parsing, chunking, metadata, embedding choice, index structure, retrieval strategy, reranking, context packing, citation policy, and freshness guarantees. Memory writes require explicit privacy and deletion policy. |
+| 13 | [Reliability, Recovery, and Failure Domains](chapters/13-reliability-recovery-and-failure-domains/README.md) | Failure handling must cover malformed input, model error, tool timeout, queue saturation, retry storm, stale index, schema drift, and deployment regression. Detection, mitigation, rollback, and degraded operation must be documented per failure class. |
+| 14 | [Observability, Profiling, and Verification](chapters/14-observability-profiling-and-verification/README.md) | Production readiness requires metrics, structured logs, traces, alerts, load tests, regression tests, failure-injection tests, and profiling hooks. Measure p50/p95/p99 latency, queue wait, TTFT, TPOT, error rate, retry rate, cache hit ratio, resource saturation, and quality regressions. |
+| 15 | [Security, Deployment, and Operational Governance](chapters/15-security-deployment-and-operational-governance/README.md) | Trust boundaries must cover identity, tenant isolation, secret handling, data retention, audit logs, network policy, model/tool permissions, supply-chain integrity, and rollback strategy. Deployment is acceptable only when observability and recovery paths are already verified. |
+
+## The Method — How Every Chapter Is Built
+
+Each chapter is a set of research notes with a fixed structure: an **Abstract** stating the claim, numbered sections with **formal models**, ASCII **figures** (captioned "Figure N.", no external rendering), **decision tables**, an **approval-gates** table whose conditions can fail a design, an **Output** statement, and **References** to verified primary sources only (peer-reviewed papers, standards bodies, official engineering writing). Every chapter carries a file map, eleven-or-more concept files, a review-templates file (a dossier plus a ~20-point reviewer checklist), and a README with a source-corpus table, a completion gate, and an Open Problems section.
+
+Nine standards accumulated across the book and bind every chapter from their introduction onward — the discipline that makes the treatment principal-scientist rather than a survey:
+
+1. **AI-native instantiation** — every discipline is re-derived for inference, agents, and retrieval, not appended.
+2. **Worked numeric example** — every stated law carries an actual calculation (0.9⁴≈0.66 stage recall; 42 ms batch-1 decode floor; 43.2 min/month at 99.9%; 4ⁿ retry amplification; 20-billion-series cardinality; blast-radius = privilege scope).
+3. **When-NOT-to-use** — every chapter admits where its machinery is the wrong choice.
+4. **Version-status verified** — GA/preview/default and threat claims are web-verified at write time and stated inline.
+5. **Research frontier, judged** — recent work is presented with an explicit adoption verdict, not neutral summary.
+6. **Composition law** — how the machinery compounds is stated with algebra and a worked number (retrieval's product-of-recalls; reliability's availability multiplication; observability's ∏ per-hop trace completeness; security's weakest-link).
+7. **Validity envelopes** — every model states its assumptions, the production conditions that break it, and the consequence.
+8. **Open Problems** — every chapter names what its discipline has *not* solved.
+9. **First-principles arithmetic** — capacity and cost are derived from device and workload parameters; benchmarks validate the derivation, they do not replace it.
 
 ## Reading Protocol
 
@@ -61,7 +93,9 @@ Verification:
 
 ## Book Conclusion
 
-The architecture is acceptable only when component responsibilities, state ownership, execution paths, failure domains, security boundaries, and verification gates are concrete enough for an implementation team to build, operate, debug, and evolve the system without relying on undocumented assumptions.
+The book completes a single argument. An architecture is acceptable only when component responsibilities, state ownership, execution paths, failure domains, security boundaries, and verification gates are concrete enough for an implementation team to build, operate, debug, evolve, **and defend** the system without relying on undocumented assumptions. The first twelve chapters make each subsystem *correct*; the operational trilogy (13–15) makes the whole *survivable, checkable, and defensible* — and the recurring move across all fifteen is the same: name the boundary, state the contract, quantify the cost, admit the alternative, and gate the claim on evidence that can fail.
+
+A system built this way is not merely *believed* to work. It is *shown* to work — reliably, observably, and defensibly — which is the only kind of correct that reaches a user. That standard, not any single technology, is what the book asks an architecture to meet.
 
 ## References
 

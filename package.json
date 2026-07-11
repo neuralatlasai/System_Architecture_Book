@@ -6,9 +6,10 @@
   "scripts": {
     "dev": "npm run generate && vite --host 127.0.0.1",
     "generate": "tsx tools/convert-docs-to-book.ts",
-    "build": "npm run generate && tsc -b && vite build",
+    "build": "npm run generate && npm run verify:content && tsc -b && vite build",
     "preview": "vite preview --host 127.0.0.1",
-    "typecheck": "tsc -b"
+    "typecheck": "tsc -b",
+    "verify:content": "tsx tools/verify-book-content.ts"
   },
   "dependencies": {
     "lucide-react": "^0.468.0",

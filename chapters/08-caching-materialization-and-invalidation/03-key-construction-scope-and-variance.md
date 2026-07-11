@@ -1,5 +1,7 @@
 # Key Construction, Scope, and Variance
 
+![Figure: Key construction, scope, and variance](images/03-key-construction-scope-variance.png)
+
 ## Abstract
 
 A cache key is a claim of *referential transparency*: every input that can change the value is in the key, so two requests producing the same key are guaranteed to accept the same bytes. Every cache correctness bug that is not a staleness bug is a violation of exactly this claim — a dimension that varies the output but was left out of the key — and the two worst instances are security incidents wearing performance costumes: **tenant/principal omitted from the key** (user A's response served to user B — Chapter 07 file 08's BOLA, executed by the cache instead of the handler) and **authorization context omitted** (an entry filled for a privileged viewer replayed to an unprivileged one — the cached-authorization bypass, which is why cursors, and cache entries alike, are minted only *after* authorization filtering). This file gives the key-closure discipline, its cost side (every keyed dimension multiplies cardinality, so closure is *engineered* by normalizing inputs, not by concatenating the request), the HTTP projection of the same law (`Vary` is key construction performed by header), and negative caching — the decision of whether "absent" is a cacheable value, which is simultaneously a hot-miss protection and a staleness bug factory for freshly created objects.

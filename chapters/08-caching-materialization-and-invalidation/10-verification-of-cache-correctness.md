@@ -1,5 +1,7 @@
 # Verification of Cache Correctness
 
+![Figure: Verification of cache correctness](images/10-verification-cache-correctness.png)
+
 ## Abstract
 
 Cache promises are uniquely easy to believe and uniquely hard to notice breaking: a wrong-scope hit returns 200, a stale read returns plausible data, a drifted view returns numbers, and a load-bearing cache "works" right up to the restart that reveals the origin can't. This file is the chapter's evidence machinery: ten drills (K1–K10) converting each file's gates into falsifiable experiments, the cache SLI set that watches the same promises between drills, and the stamp discipline inherited from Chapter 01 file 11 with this chapter's invalidator — every piece of evidence carries a **cache-generation stamp** `{entry-class contract version, key schema, TTL/freshness config, invalidation pipeline topology, eviction policy + capacity, layer map}`, because a coherence drill passed under last quarter's key schema verified last quarter's cache. Two postures carry over and one is new. From Chapter 07: drills that are cheap in CI (key closure, scope probes) run *standing*. From file 05: coherence and drift are measured by invariant-observing monitors (Polaris-class), continuously — the strongest evidence class this chapter has. New here: several drills are *destructive by design* (kill the cache, flush a layer, stall the pipeline) and therefore run in production-shaped load environments on a calendar — an unrehearsed cache failure mode is a scheduled outage with an unknown date.
