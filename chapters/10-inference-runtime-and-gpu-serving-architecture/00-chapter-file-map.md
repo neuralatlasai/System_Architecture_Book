@@ -1,5 +1,7 @@
 # Chapter 10 File Map — Inference Runtime and GPU Serving Architecture
 
+![Figure: Chapter 10 approval graph](images/00-chapter-file-map-approval-graph.png)
+
 ## Reading Order
 
 | Order | File | Owns |
