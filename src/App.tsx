@@ -180,6 +180,7 @@ function BookReader({ book }: BookReaderProps): JSX.Element {
   const [query, setQuery] = useState("");
   const [darkMode, setDarkMode] = useState(() => localStorage.getItem("book-theme") === "dark");
   const [isNavigationOpen, setIsNavigationOpen] = useState(false);
+  const [isSectionsOpen, setIsSectionsOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const [activeSectionId, setActiveSectionId] = useState<string | undefined>(initialHash?.section);
   const [readingProgress, setReadingProgress] = useState(0);
@@ -220,6 +221,7 @@ function BookReader({ book }: BookReaderProps): JSX.Element {
     setPendingSectionId(section);
     setDocumentHash(documentId, section);
     setIsNavigationOpen(false);
+    setIsSectionsOpen(false);
   }, []);
 
   useEffect(() => {
@@ -261,6 +263,21 @@ function BookReader({ book }: BookReaderProps): JSX.Element {
       window.removeEventListener("keydown", closeOnEscape);
     };
   }, [isNavigationOpen]);
+
+  useEffect(() => {
+    if (!isSectionsOpen) {
+      return;
+    }
+
+    const closeOnEscape = (event: KeyboardEvent): void => {
+      if (event.key === "Escape") {
+        setIsSectionsOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [isSectionsOpen]);
 
   useEffect(() => {
     const sectionId = pendingSectionId;
@@ -361,7 +378,7 @@ function BookReader({ book }: BookReaderProps): JSX.Element {
         <div className="site-header-inner">
           <button
             aria-label="Open navigation"
-            className="icon-button lg:hidden"
+            className="icon-button navigation-trigger lg:hidden"
             title="Open navigation"
             type="button"
             onClick={() => setIsNavigationOpen((current) => !current)}
@@ -409,6 +426,13 @@ function BookReader({ book }: BookReaderProps): JSX.Element {
         onClick={() => setIsNavigationOpen(false)}
       />
 
+      <button
+        aria-label="Close article sections"
+        className={`section-backdrop ${isSectionsOpen ? "section-backdrop-visible" : ""}`}
+        type="button"
+        onClick={() => setIsSectionsOpen(false)}
+      />
+
       <div className="reader-shell">
         <aside aria-label="Book library" className={`library-pane ${isNavigationOpen ? "library-pane-open" : ""}`}>
           <div className="mobile-navigation-header">
@@ -438,27 +462,23 @@ function BookReader({ book }: BookReaderProps): JSX.Element {
         </aside>
 
         <main className="reader-main">
-          <div className="mb-5 lg:hidden">
-            <label className="document-select-label" htmlFor="document-select">
-              Document
-            </label>
-            <select
-              id="document-select"
-              className="document-select"
-              value={selectedDocument.id}
-              onChange={(event) => navigateToDocument(event.target.value)}
-            >
-              {book.documents.map((document) => (
-                <option key={document.id} value={document.id}>
-                  {document.chapterNumber ? `Ch ${document.chapterNumber}: ` : ""}
-                  {document.title}
-                </option>
-              ))}
-            </select>
-          </div>
-
           <article key={selectedDocument.id} id="article" className="article-frame">
-            <ArticleHeader document={selectedDocument} chapter={selectedChapter} onCopySourcePath={copySourcePath} copied={copied} />
+            <ArticleHeader
+              chapter={selectedChapter}
+              copied={copied}
+              document={selectedDocument}
+              sectionsOpen={isSectionsOpen}
+              onCopySourcePath={copySourcePath}
+              onToggleSections={() => setIsSectionsOpen((current) => !current)}
+            />
+
+            <aside
+              aria-label="Article sections"
+              className={`section-pane ${isSectionsOpen ? "section-pane-open" : ""}`}
+              id="article-sections"
+            >
+              <SectionTravel activeSectionId={activeSectionId} document={selectedDocument} onNavigate={navigateToDocument} />
+            </aside>
 
             {selectedDocument.coverImage ? (
               <figure className="article-hero-media">
@@ -471,10 +491,6 @@ function BookReader({ book }: BookReaderProps): JSX.Element {
             <DocumentTravel previousDocument={previousDocument} nextDocument={nextDocument} onNavigate={navigateToDocument} />
           </article>
         </main>
-
-        <aside className="section-pane">
-          <SectionTravel activeSectionId={activeSectionId} document={selectedDocument} onNavigate={navigateToDocument} />
-        </aside>
       </div>
     </div>
   );
@@ -608,23 +624,48 @@ interface ArticleHeaderProps {
   readonly document: BookDocument;
   readonly chapter?: BookChapter;
   readonly copied: boolean;
+  readonly sectionsOpen: boolean;
   readonly onCopySourcePath: () => void;
+  readonly onToggleSections: () => void;
 }
 
-function ArticleHeader({ document, chapter, copied, onCopySourcePath }: ArticleHeaderProps): JSX.Element {
+function ArticleHeader({
+  document,
+  chapter,
+  copied,
+  sectionsOpen,
+  onCopySourcePath,
+  onToggleSections,
+}: ArticleHeaderProps): JSX.Element {
+  const hasSections = document.headings.some((heading) => heading.depth >= 2 && heading.depth <= 3);
+
   return (
     <header className="article-header">
       <div className="article-eyebrow-row">
         <span className="article-eyebrow">{chapterLabel(document)}</span>
-        <button
-          aria-label="Copy source path"
-          className="icon-button ml-auto"
-          title="Copy source path"
-          type="button"
-          onClick={onCopySourcePath}
-        >
-          {copied ? <CheckCircle2 size={18} /> : <Copy size={18} />}
-        </button>
+        <span className="article-tools">
+          <button
+            aria-controls="article-sections"
+            aria-expanded={sectionsOpen}
+            aria-label="Open article sections"
+            className="icon-button"
+            disabled={!hasSections}
+            title="Article sections"
+            type="button"
+            onClick={onToggleSections}
+          >
+            <ListTree size={18} />
+          </button>
+          <button
+            aria-label="Copy source path"
+            className="icon-button article-copy-button"
+            title="Copy source path"
+            type="button"
+            onClick={onCopySourcePath}
+          >
+            {copied ? <CheckCircle2 size={18} /> : <Copy size={18} />}
+          </button>
+        </span>
       </div>
 
       <h1>{document.title}</h1>
