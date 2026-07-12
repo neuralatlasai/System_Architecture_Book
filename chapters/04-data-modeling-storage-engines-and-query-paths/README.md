@@ -1,6 +1,6 @@
 # Chapter 04: Data Modeling, Storage Engines, and Query Paths
 
-![Figure: Data path contract overview](images/README-data-path-contract-overview.png)
+![Figure: Data path contract overview](images/README-data-path-contract-overview.webp)
 
 ## Abstract
 

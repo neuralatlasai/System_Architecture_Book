@@ -1,6 +1,6 @@
 # Verification of Plane Separation
 
-![Figure: Verification of plane separation](images/09-verification-plane-separation.png)
+![Figure: Verification of plane separation](images/09-verification-plane-separation.webp)
 
 ## Abstract
 

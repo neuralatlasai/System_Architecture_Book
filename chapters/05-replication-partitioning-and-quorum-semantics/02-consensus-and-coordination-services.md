@@ -1,6 +1,6 @@
 # Consensus and Coordination Services
 
-![Figure: Consensus and coordination services](images/02-consensus-coordination-services.png)
+![Figure: Consensus and coordination services](images/02-consensus-coordination-services.webp)
 
 ## Abstract
 

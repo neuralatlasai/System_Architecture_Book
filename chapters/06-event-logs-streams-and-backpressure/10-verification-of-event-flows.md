@@ -1,6 +1,6 @@
 # Verification of Event Flows
 
-![Figure: Verification of event flows](images/10-verification-event-flows.png)
+![Figure: Verification of event flows](images/10-verification-event-flows.webp)
 
 ## Abstract
 

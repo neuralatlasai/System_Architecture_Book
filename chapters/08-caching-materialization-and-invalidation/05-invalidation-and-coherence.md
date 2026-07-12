@@ -1,6 +1,6 @@
 # Invalidation and Coherence
 
-![Figure: Invalidation and coherence](images/05-invalidation-coherence.png)
+![Figure: Invalidation and coherence](images/05-invalidation-coherence.webp)
 
 ## Abstract
 

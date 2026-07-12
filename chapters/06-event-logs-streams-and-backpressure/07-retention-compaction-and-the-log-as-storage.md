@@ -1,6 +1,6 @@
 # Retention, Compaction, and the Log as Storage
 
-![Figure: Retention, compaction, and the log as storage](images/07-retention-compaction-log-as-storage.png)
+![Figure: Retention, compaction, and the log as storage](images/07-retention-compaction-log-as-storage.webp)
 
 ## Abstract
 

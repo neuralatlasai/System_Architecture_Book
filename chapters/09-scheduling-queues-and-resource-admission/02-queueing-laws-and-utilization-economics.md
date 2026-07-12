@@ -1,6 +1,6 @@
 # Queueing Laws and Utilization Economics
 
-![Figure: Queueing laws and utilization economics](images/02-queueing-laws-utilization-economics.png)
+![Figure: Queueing laws and utilization economics](images/02-queueing-laws-utilization-economics.webp)
 
 ## Abstract
 

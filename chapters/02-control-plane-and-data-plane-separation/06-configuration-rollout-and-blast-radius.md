@@ -1,6 +1,6 @@
 # Configuration Rollout and Blast Radius
 
-![Figure: Configuration rollout and blast-radius control](images/06-configuration-rollout-blast-radius.png)
+![Figure: Configuration rollout and blast-radius control](images/06-configuration-rollout-blast-radius.webp)
 
 ## Abstract
 

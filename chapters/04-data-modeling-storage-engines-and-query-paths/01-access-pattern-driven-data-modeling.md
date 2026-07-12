@@ -1,6 +1,6 @@
 # Access-Pattern-Driven Data Modeling
 
-![Figure: Access-pattern-driven data modeling](images/01-access-pattern-driven-data-modeling.png)
+![Figure: Access-pattern-driven data modeling](images/01-access-pattern-driven-data-modeling.webp)
 
 ## Abstract
 

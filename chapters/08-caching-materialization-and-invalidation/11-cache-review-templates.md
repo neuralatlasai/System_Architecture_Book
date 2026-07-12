@@ -1,6 +1,6 @@
 # Cache Review Templates
 
-![Figure: Cache review dossier](images/11-cache-review-dossier.png)
+![Figure: Cache review dossier](images/11-cache-review-dossier.webp)
 
 ## Abstract
 

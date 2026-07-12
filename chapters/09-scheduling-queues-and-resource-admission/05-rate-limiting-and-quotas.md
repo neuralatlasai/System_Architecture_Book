@@ -1,6 +1,6 @@
 # Rate Limiting and Quotas
 
-![Figure: Rate limiting and quotas](images/05-rate-limiting-quotas.png)
+![Figure: Rate limiting and quotas](images/05-rate-limiting-quotas.webp)
 
 ## Abstract
 

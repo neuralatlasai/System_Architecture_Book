@@ -1,6 +1,6 @@
 # Freshness, TTL, and Staleness Contracts
 
-![Figure: Freshness, TTL, and staleness contracts](images/04-freshness-ttl-staleness-contracts.png)
+![Figure: Freshness, TTL, and staleness contracts](images/04-freshness-ttl-staleness-contracts.webp)
 
 ## Abstract
 

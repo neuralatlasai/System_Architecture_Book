@@ -1,6 +1,6 @@
 # Chapter 06: Event Logs, Streams, and Backpressure
 
-![Figure: Event flow contract overview](images/README-event-flow-contract-overview.png)
+![Figure: Event flow contract overview](images/README-event-flow-contract-overview.webp)
 
 ## Abstract
 

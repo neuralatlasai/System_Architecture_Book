@@ -1,6 +1,6 @@
 # System Boundary and Ownership
 
-![Figure: System boundary ownership and plane separation](images/05-system-boundary-ownership-plane.png)
+![Figure: System boundary ownership and plane separation](images/05-system-boundary-ownership-plane.webp)
 
 ## Abstract
 

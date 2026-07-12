@@ -1,6 +1,6 @@
 # The Contract Artifact and Schema-First Design
 
-![Figure: Contract artifact and schema-first design](images/01-contract-artifact-schema-first-design.png)
+![Figure: Contract artifact and schema-first design](images/01-contract-artifact-schema-first-design.webp)
 
 ## Abstract
 

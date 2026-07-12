@@ -1,6 +1,6 @@
 # Boundary Crossing and Dependency Contracts
 
-![Figure: Boundary crossing dependency contract](images/06-boundary-crossing-dependency-contract.png)
+![Figure: Boundary crossing dependency contract](images/06-boundary-crossing-dependency-contract.webp)
 
 ## Abstract
 

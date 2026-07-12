@@ -1,6 +1,6 @@
 # API Review Templates
 
-![Figure: API review dossier](images/11-api-review-dossier.png)
+![Figure: API review dossier](images/11-api-review-dossier.webp)
 
 ## Abstract
 

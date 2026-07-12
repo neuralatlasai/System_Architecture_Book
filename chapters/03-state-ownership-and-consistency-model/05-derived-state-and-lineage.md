@@ -1,6 +1,6 @@
 # Derived State and Lineage
 
-![Figure: Derived state lineage DAG](images/05-derived-state-lineage-dag.png)
+![Figure: Derived state lineage DAG](images/05-derived-state-lineage-dag.webp)
 
 ## Abstract
 

@@ -1,6 +1,6 @@
 # Coupled Failure Domains and Anti-Patterns
 
-![Figure: Coupled failure domains and anti-patterns](images/07-coupled-failure-domains-anti-patterns.png)
+![Figure: Coupled failure domains and anti-patterns](images/07-coupled-failure-domains-anti-patterns.webp)
 
 ## Abstract
 

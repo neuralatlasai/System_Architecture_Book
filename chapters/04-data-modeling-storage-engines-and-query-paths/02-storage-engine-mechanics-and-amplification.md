@@ -1,6 +1,6 @@
 # Storage Engine Mechanics and Amplification
 
-![Figure: Storage engine mechanics and amplification](images/02-storage-engine-mechanics-amplification.png)
+![Figure: Storage engine mechanics and amplification](images/02-storage-engine-mechanics-amplification.webp)
 
 ## Abstract
 

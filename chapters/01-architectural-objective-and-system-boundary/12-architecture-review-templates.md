@@ -1,6 +1,6 @@
 # Architecture Review Templates
 
-![Figure: Architecture review dossier compiler](images/12-architecture-review-dossier-compiler.png)
+![Figure: Architecture review dossier compiler](images/12-architecture-review-dossier-compiler.webp)
 
 ## Abstract
 

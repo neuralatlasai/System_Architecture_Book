@@ -1,6 +1,6 @@
 # Event Schema Governance and Evolution
 
-![Figure: Event schema governance and evolution](images/08-event-schema-governance-evolution.png)
+![Figure: Event schema governance and evolution](images/08-event-schema-governance-evolution.webp)
 
 ## Abstract
 

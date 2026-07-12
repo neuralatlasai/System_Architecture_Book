@@ -1,6 +1,6 @@
 # Multi-Region and Conflict Handling
 
-![Figure: Multi-region and conflict handling](images/06-multi-region-conflict-handling.png)
+![Figure: Multi-region and conflict handling](images/06-multi-region-conflict-handling.webp)
 
 ## Abstract
 

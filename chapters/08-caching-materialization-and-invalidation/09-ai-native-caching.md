@@ -1,6 +1,6 @@
 # AI-Native Caching
 
-![Figure: AI-native caching](images/09-ai-native-caching.png)
+![Figure: AI-native caching](images/09-ai-native-caching.webp)
 
 ## Abstract
 

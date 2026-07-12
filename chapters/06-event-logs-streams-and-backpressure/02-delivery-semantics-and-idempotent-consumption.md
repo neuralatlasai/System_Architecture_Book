@@ -1,6 +1,6 @@
 # Delivery Semantics and Idempotent Consumption
 
-![Figure: Delivery semantics and idempotent consumption](images/02-delivery-semantics-idempotent-consumption.png)
+![Figure: Delivery semantics and idempotent consumption](images/02-delivery-semantics-idempotent-consumption.webp)
 
 ## Abstract
 

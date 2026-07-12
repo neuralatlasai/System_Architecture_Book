@@ -1,5 +1,7 @@
 # Reliability Review Templates
 
+![Figure: Reliability review dossier and approval gates](images/11-reliability-review-templates.webp)
+
 ## Abstract
 
 This file assembles the chapter into its executable form: the dossier a team completes to put a reliability design in front of an architecture review, and the checklist the reviewer walks to approve it. The organizing principle is the chapter rule (file 00) made procedural: **every failure class in the file-01 taxonomy gets a row, and every row answers the four questions — detect, isolate, degrade, recover** — with each answer either a mechanism designed in this chapter or a cited primitive from another, and each backed by a dated drill stamp (file 10). The dossier forces the numbers the chapter derives — MTTD against the error budget (file 02), blast radius as 1/N (file 03), RTO/RPO from arithmetic (file 04), availability as a *correlation-audited* product (file 09) — where the default would report reassuring prose with no measurement behind it. A reliability review that produces "looks robust" has failed; a reliability review that produces "RL6 restore drill 2026-06-14 measured RTO 4.9h against a 2h SLA — gap, remediation owned" has done its job.

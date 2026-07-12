@@ -1,6 +1,6 @@
 # Timeout Budgets, Retries, and Hedging
 
-![Figure: Timeout budgets, retries, and hedging](images/03-timeout-budgets-retries-hedging.png)
+![Figure: Timeout budgets, retries, and hedging](images/03-timeout-budgets-retries-hedging.webp)
 
 ## Abstract
 

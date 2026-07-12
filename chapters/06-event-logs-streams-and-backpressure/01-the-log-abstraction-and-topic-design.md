@@ -1,6 +1,6 @@
 # The Log Abstraction and Topic Design
 
-![Figure: Log abstraction and topic design](images/01-log-abstraction-topic-design.png)
+![Figure: Log abstraction and topic design](images/01-log-abstraction-topic-design.webp)
 
 ## Abstract
 

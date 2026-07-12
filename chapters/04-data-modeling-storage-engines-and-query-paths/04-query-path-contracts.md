@@ -1,6 +1,6 @@
 # Query-Path Contracts
 
-![Figure: Query-path contracts](images/04-query-path-contracts.png)
+![Figure: Query-path contracts](images/04-query-path-contracts.webp)
 
 ## Abstract
 

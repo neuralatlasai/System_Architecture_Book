@@ -1,6 +1,6 @@
 # Data-Plane Anatomy
 
-![Figure: Data-plane anatomy](images/03-data-plane-anatomy.png)
+![Figure: Data-plane anatomy](images/03-data-plane-anatomy.webp)
 
 ## Abstract
 

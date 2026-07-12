@@ -1,6 +1,6 @@
 # Replication Topologies and Lag
 
-![Figure: Replication topologies and lag](images/01-replication-topologies-lag.png)
+![Figure: Replication topologies and lag](images/01-replication-topologies-lag.webp)
 
 ## Abstract
 

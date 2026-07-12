@@ -1,5 +1,7 @@
 # Agent Review Templates
 
+![Figure: Agent review templates](images/11-agent-review-templates.webp)
+
 ## Abstract
 
 This file assembles the chapter into its executable form: the dossier a team completes to put an agent system — admission verdict to blast-radius envelope — in front of an architecture review, and the checklist the reviewer walks to approve it. The organizing principle is the chapter's root discipline made procedural: autonomy is an envelope the harness enforces, so every dossier section forces the written answer where the model's discretion would otherwise decide — is a loop even warranted, what does the pⁿ arithmetic project, what may each tool do with whose authority, how is context kept small and memory kept owned, where do outputs merge, how is success actually verified, what does a steered agent reach, and how is any of it observed. Evidence citations must satisfy file 10's stamp discipline: dated, six-field episode-generation-stamped, adversarial where safety is the claim, and re-minted by the canary spine where the pipeline can carry them.

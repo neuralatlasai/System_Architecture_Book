@@ -1,6 +1,6 @@
 # Versioning, Deprecation, and Compatibility
 
-![Figure: Versioning, deprecation, and compatibility](images/07-versioning-deprecation-compatibility.png)
+![Figure: Versioning, deprecation, and compatibility](images/07-versioning-deprecation-compatibility.webp)
 
 ## Abstract
 

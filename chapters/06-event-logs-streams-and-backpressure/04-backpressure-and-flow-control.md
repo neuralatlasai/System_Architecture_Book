@@ -1,6 +1,6 @@
 # Backpressure and Flow Control
 
-![Figure: Backpressure and flow control](images/04-backpressure-flow-control.png)
+![Figure: Backpressure and flow control](images/04-backpressure-flow-control.webp)
 
 ## Abstract
 

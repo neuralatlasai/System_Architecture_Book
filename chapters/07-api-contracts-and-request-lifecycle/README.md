@@ -1,6 +1,6 @@
 # Chapter 07: API Contracts and Request Lifecycle
 
-![Figure: API contract lifecycle overview](images/README-api-contract-lifecycle-overview.png)
+![Figure: API contract lifecycle overview](images/README-api-contract-lifecycle-overview.webp)
 
 ## Abstract
 

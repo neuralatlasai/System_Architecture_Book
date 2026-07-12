@@ -1,6 +1,6 @@
 # Chapter 04 File Map
 
-![Figure: Chapter 04 file map approval dependency graph](images/00-chapter-file-map-approval-graph.png)
+![Figure: Chapter 04 file map approval dependency graph](images/00-chapter-file-map-approval-graph.webp)
 
 ## Purpose
 

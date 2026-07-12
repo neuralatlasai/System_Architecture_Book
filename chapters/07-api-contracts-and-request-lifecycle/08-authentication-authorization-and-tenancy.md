@@ -1,6 +1,6 @@
 # Authentication, Authorization, and Tenancy
 
-![Figure: Authentication, authorization, and tenancy](images/08-authentication-authorization-tenancy.png)
+![Figure: Authentication, authorization, and tenancy](images/08-authentication-authorization-tenancy.webp)
 
 ## Abstract
 

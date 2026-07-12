@@ -1,6 +1,6 @@
 # Cache Placement and the Layer Topology
 
-![Figure: Cache placement and layer topology](images/02-cache-placement-layer-topology.png)
+![Figure: Cache placement and layer topology](images/02-cache-placement-layer-topology.webp)
 
 ## Abstract
 

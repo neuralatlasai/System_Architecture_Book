@@ -1,6 +1,6 @@
 # Admission, Scheduling, and Placement
 
-![Figure: Admission scheduling and placement decision ladder](images/05-admission-scheduling-placement.png)
+![Figure: Admission scheduling and placement decision ladder](images/05-admission-scheduling-placement.webp)
 
 ## Abstract
 

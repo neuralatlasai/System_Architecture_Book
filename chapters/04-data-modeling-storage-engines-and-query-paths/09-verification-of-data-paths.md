@@ -1,6 +1,6 @@
 # Verification of Data Paths
 
-![Figure: Verification of data paths](images/09-verification-data-paths.png)
+![Figure: Verification of data paths](images/09-verification-data-paths.webp)
 
 ## Abstract
 

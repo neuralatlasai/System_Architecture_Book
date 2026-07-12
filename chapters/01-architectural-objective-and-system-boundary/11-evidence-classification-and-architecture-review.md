@@ -1,6 +1,6 @@
 # Evidence Classification and Architecture Review
 
-![Figure: Evidence classification architecture review protocol](images/11-evidence-classification-review-protocol.png)
+![Figure: Evidence classification architecture review protocol](images/11-evidence-classification-review-protocol.webp)
 
 ## Abstract
 

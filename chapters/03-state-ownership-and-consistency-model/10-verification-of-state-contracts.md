@@ -1,6 +1,6 @@
 # Verification of State Contracts
 
-![Figure: Verification of state contracts](images/10-verification-state-contracts.png)
+![Figure: Verification of state contracts](images/10-verification-state-contracts.webp)
 
 ## Abstract
 

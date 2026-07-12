@@ -1,6 +1,6 @@
 # Engine Selection Against Contracts
 
-![Figure: Engine selection against contracts](images/08-engine-selection-contracts.png)
+![Figure: Engine selection against contracts](images/08-engine-selection-contracts.webp)
 
 ## Abstract
 

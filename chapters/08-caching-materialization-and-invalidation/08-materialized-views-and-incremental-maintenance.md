@@ -1,6 +1,6 @@
 # Materialized Views and Incremental Maintenance
 
-![Figure: Materialized views and incremental maintenance](images/08-materialized-views-incremental-maintenance.png)
+![Figure: Materialized views and incremental maintenance](images/08-materialized-views-incremental-maintenance.webp)
 
 ## Abstract
 

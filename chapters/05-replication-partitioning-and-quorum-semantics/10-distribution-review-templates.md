@@ -1,6 +1,6 @@
 # Distribution Review Templates
 
-![Figure: Distribution review dossier compiler](images/10-distribution-review-dossier.png)
+![Figure: Distribution review dossier compiler](images/10-distribution-review-dossier.webp)
 
 ## Abstract
 

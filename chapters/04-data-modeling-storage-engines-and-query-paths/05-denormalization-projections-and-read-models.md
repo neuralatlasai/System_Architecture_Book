@@ -1,6 +1,6 @@
 # Denormalization, Projections, and Read Models
 
-![Figure: Denormalization projections and read models](images/05-denormalization-projections-read-models.png)
+![Figure: Denormalization projections and read models](images/05-denormalization-projections-read-models.webp)
 
 ## Abstract
 

@@ -1,6 +1,6 @@
 # Backlogs, Retry Storms, and Recovery
 
-![Figure: Backlogs, retry storms, and recovery](images/08-backlogs-retry-storms-recovery.png)
+![Figure: Backlogs, retry storms, and recovery](images/08-backlogs-retry-storms-recovery.webp)
 
 ## Abstract
 

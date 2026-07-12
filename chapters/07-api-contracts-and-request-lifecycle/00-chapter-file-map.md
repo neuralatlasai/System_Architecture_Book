@@ -1,6 +1,6 @@
 # Chapter 07 File Map
 
-![Figure: Chapter 07 approval graph](images/00-chapter-file-map-approval-graph.png)
+![Figure: Chapter 07 approval graph](images/00-chapter-file-map-approval-graph.webp)
 
 ## Purpose
 

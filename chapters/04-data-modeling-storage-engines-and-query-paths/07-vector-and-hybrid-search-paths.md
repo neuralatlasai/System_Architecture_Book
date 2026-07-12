@@ -1,6 +1,6 @@
 # Vector and Hybrid Search Paths
 
-![Figure: Vector and hybrid search paths](images/07-vector-hybrid-search-paths.png)
+![Figure: Vector and hybrid search paths](images/07-vector-hybrid-search-paths.webp)
 
 ## Abstract
 

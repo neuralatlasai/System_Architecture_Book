@@ -1,6 +1,6 @@
 # Verification of Cache Correctness
 
-![Figure: Verification of cache correctness](images/10-verification-cache-correctness.png)
+![Figure: Verification of cache correctness](images/10-verification-cache-correctness.webp)
 
 ## Abstract
 

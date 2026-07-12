@@ -1,6 +1,6 @@
 # State Ownership Model
 
-![Figure: State ownership model](images/01-state-ownership-model.png)
+![Figure: State ownership model](images/01-state-ownership-model.webp)
 
 ## Abstract
 

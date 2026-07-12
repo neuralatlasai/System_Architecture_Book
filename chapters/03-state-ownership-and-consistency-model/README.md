@@ -1,6 +1,6 @@
 # Chapter 03: State Ownership and Consistency Model
 
-![Figure: State ownership and consistency overview](images/README-state-ownership-consistency-overview.png)
+![Figure: State ownership and consistency overview](images/README-state-ownership-consistency-overview.webp)
 
 ## Abstract
 

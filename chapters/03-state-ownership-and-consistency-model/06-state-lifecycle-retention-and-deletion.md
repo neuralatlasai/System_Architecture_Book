@@ -1,6 +1,6 @@
 # State Lifecycle, Retention, and Deletion
 
-![Figure: State lifecycle retention and deletion](images/06-state-lifecycle-retention-deletion.png)
+![Figure: State lifecycle retention and deletion](images/06-state-lifecycle-retention-deletion.webp)
 
 ## Abstract
 

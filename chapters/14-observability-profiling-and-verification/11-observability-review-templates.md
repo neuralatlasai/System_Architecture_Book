@@ -1,5 +1,7 @@
 # Observability and Verification Review Templates
 
+![Figure: Observability and verification review dossier](images/11-observability-review-templates.webp)
+
 ## Abstract
 
 This file assembles the chapter into its executable form: the dossier a team completes to put an observability-and-verification design in front of an architecture review, and the checklist the reviewer walks to approve it. The organizing principle is the chapter rule (file 00) made procedural: **every SLI a prior chapter defined has an emission path, every alert pages on a user-felt symptom, and every architecture risk has a test that can fail** — with the coverage audited both ways, so a blind spot (a question no telemetry answers) and waste (telemetry answering no question) are both findings. The dossier forces the numbers and maps the chapter demands — the golden signals per service, the trace-completeness product, the cardinality budget, the SLO/burn-rate alerts, the risk→test map, the readiness gate — where the default would report "we have dashboards and tests." A review that produces "looks well-monitored" has failed; a review that produces "the checkout path has a dark hop at the legacy inventory service (trace completeness 0.67), and there is no open-loop load test for the queue that collapsed last quarter" has done its job.

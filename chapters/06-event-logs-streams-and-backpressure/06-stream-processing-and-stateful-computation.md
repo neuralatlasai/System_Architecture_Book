@@ -1,6 +1,6 @@
 # Stream Processing and Stateful Computation
 
-![Figure: Stream processing and stateful computation](images/06-stream-processing-stateful-computation.png)
+![Figure: Stream processing and stateful computation](images/06-stream-processing-stateful-computation.webp)
 
 ## Abstract
 

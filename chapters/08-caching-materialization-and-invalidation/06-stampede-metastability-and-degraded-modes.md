@@ -1,6 +1,6 @@
 # Stampede, Metastability, and Degraded Modes
 
-![Figure: Stampede, metastability, and degraded modes](images/06-stampede-metastability-degraded-modes.png)
+![Figure: Stampede, metastability, and degraded modes](images/06-stampede-metastability-degraded-modes.webp)
 
 ## Abstract
 

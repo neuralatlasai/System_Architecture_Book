@@ -1,6 +1,6 @@
 # Chapter 05: Replication, Partitioning, and Quorum Semantics
 
-![Figure: Distribution contract overview](images/README-distribution-contract-overview.png)
+![Figure: Distribution contract overview](images/README-distribution-contract-overview.webp)
 
 ## Abstract
 

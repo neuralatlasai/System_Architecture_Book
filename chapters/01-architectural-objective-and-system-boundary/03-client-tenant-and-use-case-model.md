@@ -1,6 +1,6 @@
 # Client, Tenant, and Use-Case Model
 
-![Figure: Client tenant and use-case isolation model](images/03-client-tenant-isolation-model.png)
+![Figure: Client tenant and use-case isolation model](images/03-client-tenant-isolation-model.webp)
 
 ## Abstract
 

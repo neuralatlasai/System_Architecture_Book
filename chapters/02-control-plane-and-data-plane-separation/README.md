@@ -1,6 +1,6 @@
 # Chapter 02: Control Plane and Data Plane Separation
 
-![Figure: Control plane and data plane separation overview](images/README-control-data-plane-separation.png)
+![Figure: Control plane and data plane separation overview](images/README-control-data-plane-separation.webp)
 
 ## Abstract
 

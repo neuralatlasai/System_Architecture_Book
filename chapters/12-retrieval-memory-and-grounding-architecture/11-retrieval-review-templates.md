@@ -1,5 +1,7 @@
 # Retrieval Review Templates
 
+![Figure: Retrieval review templates](images/11-retrieval-review-templates.webp)
+
 ## Abstract
 
 This file assembles the chapter into its executable form: the dossier a team completes to put a retrieval, memory, and grounding system — retrieve-vs-fit admission to injection-boundary — in front of an architecture review, and the checklist the reviewer walks to approve it. The organizing principle is the chapter's root discipline made procedural: retrieval quality is a *product of stage recalls* (file 02), so every dossier section forces a per-stage recall number where the default would report an unactionable end-to-end score — did the answer survive parsing, survive chunking, survive the ANN, survive reranking, survive packing, and then get *used faithfully* by the generator. Evidence citations must satisfy file 10's stamp discipline: dated, six-field retrieval-generation-stamped, measured against a versioned gold set, and split into the two halves (did we fetch it, did we use it) that every quality investigation begins with.

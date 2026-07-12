@@ -1,6 +1,6 @@
 # Priority, Preemption, and Deadline Scheduling
 
-![Figure: Priority, preemption, and deadline scheduling](images/07-priority-preemption-deadline-scheduling.png)
+![Figure: Priority, preemption, and deadline scheduling](images/07-priority-preemption-deadline-scheduling.webp)
 
 ## Abstract
 

@@ -1,6 +1,6 @@
 # Errors, Status Codes, and Partial Failure
 
-![Figure: Errors, status codes, and partial failure](images/05-errors-status-codes-partial-failure.png)
+![Figure: Errors, status codes, and partial failure](images/05-errors-status-codes-partial-failure.webp)
 
 ## Abstract
 

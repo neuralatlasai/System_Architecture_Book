@@ -1,6 +1,6 @@
 # Pagination, Filtering, and Bulk Surfaces
 
-![Figure: Pagination, filtering, and bulk surfaces](images/06-pagination-filtering-bulk-surfaces.png)
+![Figure: Pagination, filtering, and bulk surfaces](images/06-pagination-filtering-bulk-surfaces.webp)
 
 ## Abstract
 

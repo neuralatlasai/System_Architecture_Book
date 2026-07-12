@@ -1,6 +1,6 @@
 # Streaming, Long-Running, and AI Request Lifecycles
 
-![Figure: Streaming, long-running, and AI request lifecycles](images/09-streaming-long-running-ai-request-lifecycles.png)
+![Figure: Streaming, long-running, and AI request lifecycles](images/09-streaming-long-running-ai-request-lifecycles.webp)
 
 ## Abstract
 

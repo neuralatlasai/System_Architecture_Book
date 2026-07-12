@@ -145,4 +145,5 @@ vite.config.ts.timestamp-*
 # Generated online book content
 public/book-assets/
 public/book-content.json
+public/book-documents/
 src/generated/

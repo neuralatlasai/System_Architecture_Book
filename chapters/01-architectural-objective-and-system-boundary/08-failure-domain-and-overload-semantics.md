@@ -1,6 +1,6 @@
 # Failure Domain and Overload Semantics
 
-![Figure: Failure domain and overload semantics](images/08-failure-overload-semantics.png)
+![Figure: Failure domain and overload semantics](images/08-failure-overload-semantics.webp)
 
 ## Abstract
 

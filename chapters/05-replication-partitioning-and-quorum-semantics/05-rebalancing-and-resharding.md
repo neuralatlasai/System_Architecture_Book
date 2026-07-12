@@ -1,6 +1,6 @@
 # Rebalancing and Resharding
 
-![Figure: Rebalancing and resharding](images/05-rebalancing-resharding.png)
+![Figure: Rebalancing and resharding](images/05-rebalancing-resharding.webp)
 
 ## Abstract
 

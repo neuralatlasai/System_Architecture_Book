@@ -1,6 +1,6 @@
 # Request Lifecycle and Middleware Order
 
-![Figure: Request lifecycle and middleware order](images/02-request-lifecycle-middleware-order.png)
+![Figure: Request lifecycle and middleware order](images/02-request-lifecycle-middleware-order.webp)
 
 ## Abstract
 

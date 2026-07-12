@@ -1,6 +1,6 @@
 # State Classification and Consistency Boundary
 
-![Figure: State classification and consistency boundary](images/07-state-consistency-boundary.png)
+![Figure: State classification and consistency boundary](images/07-state-consistency-boundary.webp)
 
 ## Abstract
 

@@ -1,6 +1,6 @@
 # AI Workload Scheduling
 
-![Figure: AI workload scheduling](images/09-ai-workload-scheduling.png)
+![Figure: AI workload scheduling](images/09-ai-workload-scheduling.webp)
 
 ## Abstract
 

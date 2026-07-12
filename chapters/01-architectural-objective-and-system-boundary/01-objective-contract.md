@@ -1,6 +1,6 @@
 # Objective Contract
 
-![Figure: Falsifiable objective contract model](images/01-objective-contract-falsifiable-system.png)
+![Figure: Falsifiable objective contract model](images/01-objective-contract-falsifiable-system.webp)
 
 ## Abstract
 

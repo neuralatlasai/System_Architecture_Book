@@ -1,6 +1,6 @@
 # AI-Native State
 
-![Figure: AI-native state contract](images/09-ai-native-state-contract.png)
+![Figure: AI-native state contract](images/09-ai-native-state-contract.webp)
 
 ## Abstract
 

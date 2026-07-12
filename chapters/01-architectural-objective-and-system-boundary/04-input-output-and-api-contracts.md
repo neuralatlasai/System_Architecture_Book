@@ -1,6 +1,6 @@
 # Input, Output, and API Contracts
 
-![Figure: API contract status machine](images/04-api-contract-status-machine.png)
+![Figure: API contract status machine](images/04-api-contract-status-machine.webp)
 
 ## Abstract
 

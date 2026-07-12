@@ -1,6 +1,6 @@
 # The Serving Runtime and the Buy-vs-Run Decision
 
-![Figure: Serving runtime and buy-vs-run decision](images/01-serving-runtime-buy-vs-run.png)
+![Figure: Serving runtime and buy-vs-run decision](images/01-serving-runtime-buy-vs-run.webp)
 
 ## Abstract
 

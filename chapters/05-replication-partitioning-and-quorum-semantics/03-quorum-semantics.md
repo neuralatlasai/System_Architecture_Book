@@ -1,6 +1,6 @@
 # Quorum Semantics
 
-![Figure: Quorum semantics](images/03-quorum-semantics.png)
+![Figure: Quorum semantics](images/03-quorum-semantics.webp)
 
 ## Abstract
 

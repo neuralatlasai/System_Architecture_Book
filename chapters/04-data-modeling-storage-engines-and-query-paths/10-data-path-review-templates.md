@@ -1,6 +1,6 @@
 # Data-Path Review Templates
 
-![Figure: Data-path review dossier compiler](images/10-data-path-review-dossier.png)
+![Figure: Data-path review dossier compiler](images/10-data-path-review-dossier.webp)
 
 ## Abstract
 

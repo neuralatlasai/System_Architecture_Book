@@ -6,6 +6,7 @@ import {
   Copy,
   FileText,
   ListTree,
+  Maximize2,
   Moon,
   PanelLeft,
   Search,
@@ -13,9 +14,11 @@ import {
   X,
 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import type { BookChapter, BookContent, BookDocument, BookHeading } from "./types";
+import type { BookChapter, BookContent, BookDocument, BookDocumentContent, BookHeading } from "./types";
 
 const bookContentUrl = `${import.meta.env.BASE_URL}book-content.json`;
+const bookDocumentContentUrl = (documentId: string): string =>
+  `${import.meta.env.BASE_URL}book-documents/${encodeURIComponent(documentId)}.json`;
 
 type LoadState =
   | { readonly status: "loading" }
@@ -30,6 +33,11 @@ interface ParsedHash {
 interface SearchHit {
   readonly document: BookDocument;
   readonly score: number;
+}
+
+interface DocumentLoadError {
+  readonly documentId: string;
+  readonly message: string;
 }
 
 function parseHash(hashValue: string, documentsById: ReadonlyMap<string, BookDocument>): ParsedHash | undefined {
@@ -181,9 +189,13 @@ function BookReader({ book }: BookReaderProps): JSX.Element {
   const [darkMode, setDarkMode] = useState(() => localStorage.getItem("book-theme") === "dark");
   const [isNavigationOpen, setIsNavigationOpen] = useState(false);
   const [isSectionsOpen, setIsSectionsOpen] = useState(false);
+  const [isImageViewerOpen, setIsImageViewerOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const [activeSectionId, setActiveSectionId] = useState<string | undefined>(initialHash?.section);
   const [readingProgress, setReadingProgress] = useState(0);
+  const [documentBodies, setDocumentBodies] = useState<ReadonlyMap<string, string>>(() => new Map());
+  const [documentLoadError, setDocumentLoadError] = useState<DocumentLoadError | undefined>();
+  const [documentReloadToken, setDocumentReloadToken] = useState(0);
 
   const selectedDocument = documentsById.get(selectedDocumentId) ?? book.documents[0];
   const selectedChapter = selectedDocument?.chapterNumber
@@ -192,6 +204,7 @@ function BookReader({ book }: BookReaderProps): JSX.Element {
   const selectedIndex = book.documents.findIndex((document) => document.id === selectedDocument?.id);
   const previousDocument = selectedIndex > 0 ? book.documents[selectedIndex - 1] : undefined;
   const nextDocument = selectedIndex >= 0 && selectedIndex < book.documents.length - 1 ? book.documents[selectedIndex + 1] : undefined;
+  const selectedDocumentHtml = documentBodies.get(selectedDocumentId);
 
   const normalizedQuery = query.trim().toLowerCase();
   const sectionHeadingIds = useMemo(
@@ -216,12 +229,60 @@ function BookReader({ book }: BookReaderProps): JSX.Element {
       .slice(0, 24);
   }, [book.documents, normalizedQuery]);
 
+  useEffect(() => {
+    if (selectedDocumentHtml !== undefined) {
+      setDocumentLoadError(undefined);
+      return;
+    }
+
+    const controller = new AbortController();
+    let cancelled = false;
+    setDocumentLoadError(undefined);
+
+    async function loadDocumentBody(): Promise<void> {
+      try {
+        const response = await fetch(bookDocumentContentUrl(selectedDocumentId), {
+          cache: "force-cache",
+          headers: { Accept: "application/json" },
+          signal: controller.signal,
+        });
+
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+        const content = (await response.json()) as BookDocumentContent;
+        if (content.id !== selectedDocumentId) throw new Error(`Unexpected document '${content.id}'`);
+
+        if (!cancelled) {
+          setDocumentBodies((current) => {
+            const next = new Map(current);
+            next.set(content.id, content.html);
+            return next;
+          });
+        }
+      } catch (error) {
+        if (cancelled || controller.signal.aborted) return;
+        setDocumentLoadError({
+          documentId: selectedDocumentId,
+          message: error instanceof Error ? error.message : "Unknown loading failure",
+        });
+      }
+    }
+
+    void loadDocumentBody();
+
+    return () => {
+      cancelled = true;
+      controller.abort();
+    };
+  }, [documentReloadToken, selectedDocumentHtml, selectedDocumentId]);
+
   const navigateToDocument = useCallback((documentId: string, section?: string) => {
     setSelectedDocumentId(documentId);
     setPendingSectionId(section);
     setDocumentHash(documentId, section);
     setIsNavigationOpen(false);
     setIsSectionsOpen(false);
+    setIsImageViewerOpen(false);
   }, []);
 
   useEffect(() => {
@@ -280,6 +341,25 @@ function BookReader({ book }: BookReaderProps): JSX.Element {
   }, [isSectionsOpen]);
 
   useEffect(() => {
+    if (!isImageViewerOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    const closeOnEscape = (event: KeyboardEvent): void => {
+      if (event.key === "Escape") setIsImageViewerOpen(false);
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", closeOnEscape);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [isImageViewerOpen]);
+
+  useEffect(() => {
+    if (selectedDocumentHtml === undefined) return;
+
     const sectionId = pendingSectionId;
 
     window.requestAnimationFrame(() => {
@@ -292,7 +372,7 @@ function BookReader({ book }: BookReaderProps): JSX.Element {
 
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
-  }, [selectedDocumentId, pendingSectionId]);
+  }, [pendingSectionId, selectedDocumentHtml, selectedDocumentId]);
 
   useEffect(() => {
     let animationFrameId = 0;
@@ -349,7 +429,7 @@ function BookReader({ book }: BookReaderProps): JSX.Element {
       window.removeEventListener("scroll", scheduleReadingStateUpdate);
       window.removeEventListener("resize", scheduleReadingStateUpdate);
     };
-  }, [selectedDocumentId, sectionHeadingIds]);
+  }, [selectedDocumentHtml, selectedDocumentId, sectionHeadingIds]);
 
   const copySourcePath = useCallback(async () => {
     if (!selectedDocument) {
@@ -474,11 +554,47 @@ function BookReader({ book }: BookReaderProps): JSX.Element {
 
             {selectedDocument.coverImage ? (
               <figure className="article-hero-media">
-                <img alt={`${selectedDocument.title} visual overview`} decoding="async" loading="eager" src={selectedDocument.coverImage} />
+                <button
+                  aria-label={`Expand ${selectedDocument.title} visual overview`}
+                  className="article-hero-button"
+                  title="Expand diagram"
+                  type="button"
+                  onClick={() => setIsImageViewerOpen(true)}
+                >
+                  <img
+                    alt={`${selectedDocument.title} visual overview`}
+                    decoding="async"
+                    draggable={false}
+                    fetchPriority="high"
+                    height={selectedDocument.coverImageHeight}
+                    loading="eager"
+                    src={selectedDocument.coverImage}
+                    width={selectedDocument.coverImageWidth}
+                  />
+                  <span aria-hidden="true" className="image-expand-indicator">
+                    <Maximize2 size={17} />
+                  </span>
+                </button>
               </figure>
             ) : null}
 
-            <div className="article-prose" dangerouslySetInnerHTML={{ __html: selectedDocument.html }} />
+            {selectedDocumentHtml !== undefined ? (
+              <div className="article-prose" dangerouslySetInnerHTML={{ __html: selectedDocumentHtml }} />
+            ) : documentLoadError?.documentId === selectedDocumentId ? (
+              <section className="article-load-error" role="alert">
+                <strong>Article unavailable</strong>
+                <span>{documentLoadError.message}</span>
+                <button type="button" onClick={() => setDocumentReloadToken((current) => current + 1)}>
+                  Retry
+                </button>
+              </section>
+            ) : (
+              <div aria-label="Loading article" className="article-loading" role="status">
+                <span />
+                <span />
+                <span />
+              </div>
+            )}
 
             <DocumentTravel previousDocument={previousDocument} nextDocument={nextDocument} onNavigate={navigateToDocument} />
           </article>
@@ -492,6 +608,41 @@ function BookReader({ book }: BookReaderProps): JSX.Element {
           <SectionTravel activeSectionId={activeSectionId} document={selectedDocument} onNavigate={navigateToDocument} />
         </aside>
       </div>
+
+      {isImageViewerOpen && selectedDocument.coverImage ? (
+        <div className="image-viewer">
+          <button
+            aria-label="Close expanded diagram"
+            className="image-viewer-backdrop"
+            type="button"
+            onClick={() => setIsImageViewerOpen(false)}
+          />
+          <section aria-label={`${selectedDocument.title} expanded diagram`} aria-modal="true" className="image-viewer-panel" role="dialog">
+            <header className="image-viewer-toolbar">
+              <strong>{selectedDocument.title}</strong>
+              <button
+                autoFocus
+                aria-label="Close expanded diagram"
+                className="icon-button"
+                title="Close diagram"
+                type="button"
+                onClick={() => setIsImageViewerOpen(false)}
+              >
+                <X size={18} />
+              </button>
+            </header>
+            <div className="image-viewer-canvas">
+              <img
+                alt={`${selectedDocument.title} visual overview`}
+                draggable={false}
+                height={selectedDocument.coverImageFullHeight ?? selectedDocument.coverImageHeight}
+                src={selectedDocument.coverImageFull ?? selectedDocument.coverImage}
+                width={selectedDocument.coverImageFullWidth ?? selectedDocument.coverImageWidth}
+              />
+            </div>
+          </section>
+        </div>
+      ) : null}
     </div>
   );
 }

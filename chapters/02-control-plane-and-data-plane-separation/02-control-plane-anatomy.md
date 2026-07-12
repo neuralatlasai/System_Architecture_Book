@@ -1,6 +1,6 @@
 # Control-Plane Anatomy
 
-![Figure: Control-plane anatomy](images/02-control-plane-anatomy.png)
+![Figure: Control-plane anatomy](images/02-control-plane-anatomy.webp)
 
 ## Abstract
 

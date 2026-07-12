@@ -1,6 +1,6 @@
 # Scheduling Review Templates
 
-![Figure: Scheduling review dossier](images/11-scheduling-review-dossier.png)
+![Figure: Scheduling review dossier](images/11-scheduling-review-dossier.webp)
 
 ## Abstract
 

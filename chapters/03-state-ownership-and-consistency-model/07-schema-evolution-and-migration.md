@@ -1,6 +1,6 @@
 # Schema Evolution and Migration
 
-![Figure: Schema evolution and migration](images/07-schema-evolution-migration.png)
+![Figure: Schema evolution and migration](images/07-schema-evolution-migration.webp)
 
 ## Abstract
 

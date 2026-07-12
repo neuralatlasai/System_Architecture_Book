@@ -1,6 +1,6 @@
 # Chapter 08 — Caching, Materialization, and Invalidation
 
-![Figure: Cache correctness overview](images/README-cache-correctness-overview.png)
+![Figure: Cache correctness overview](images/README-cache-correctness-overview.webp)
 
 ## Abstract
 

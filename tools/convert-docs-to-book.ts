@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import MarkdownIt from "markdown-it";
 import sanitizeHtml from "sanitize-html";
+import sharp from "sharp";
 
 interface ChapterIndexEntry {
   readonly number: number;
@@ -33,6 +34,15 @@ interface RenderEnvironment {
   readonly coverImage?: string;
 }
 
+interface CoverImage {
+  readonly src: string;
+  readonly width?: number;
+  readonly height?: number;
+  readonly fullSrc?: string;
+  readonly fullWidth?: number;
+  readonly fullHeight?: number;
+}
+
 interface BookDocument {
   readonly id: string;
   readonly title: string;
@@ -47,8 +57,17 @@ interface BookDocument {
   readonly wordCount: number;
   readonly headings: RenderHeading[];
   readonly coverImage?: string;
-  readonly html: string;
+  readonly coverImageWidth?: number;
+  readonly coverImageHeight?: number;
+  readonly coverImageFull?: string;
+  readonly coverImageFullWidth?: number;
+  readonly coverImageFullHeight?: number;
   readonly searchText: string;
+}
+
+interface BookDocumentContent {
+  readonly id: string;
+  readonly html: string;
 }
 
 interface BookChapter {
@@ -78,6 +97,7 @@ const projectRoot = process.cwd();
 const chaptersRoot = path.join(projectRoot, "chapters");
 const publicRoot = path.join(projectRoot, "public");
 const publicAssetRoot = path.join(projectRoot, "public", "book-assets");
+const publicDocumentRoot = path.join(projectRoot, "public", "book-documents");
 const markdown = new MarkdownIt({
   breaks: false,
   html: false,
@@ -152,7 +172,7 @@ function parseMarkdownImageDestination(rawDestination: string): string {
   return whitespaceIndex >= 0 ? trimmedDestination.slice(0, whitespaceIndex) : trimmedDestination;
 }
 
-function leadingCoverImage(markdownText: string, sourcePath: string): string | undefined {
+async function leadingCoverImage(markdownText: string, sourcePath: string): Promise<CoverImage | undefined> {
   const withoutByteOrderMark = markdownText.replace(/^\uFEFF?/, "");
   const withoutTitle = withoutByteOrderMark.replace(/^#\s+.+(?:\r?\n|$)/, "");
   const imageMatch = withoutTitle.match(/^(?:[ \t]*\r?\n)*!\[[^\]\r\n]*]\(([^)]+)\)/);
@@ -168,14 +188,55 @@ function leadingCoverImage(markdownText: string, sourcePath: string): string | u
   }
 
   if (isExternalUrl(rawSrc)) {
-    return rawSrc;
+    return { src: rawSrc, fullSrc: rawSrc };
   }
 
   const { pathname, suffix } = splitUrl(rawSrc);
   const resolvedPath = path.resolve(path.dirname(sourcePath), decodeURIComponent(pathname));
   const publicPath = copyAsset(resolvedPath);
 
-  return publicPath.length > 0 ? `${publicPath}${suffix}` : undefined;
+  if (publicPath.length === 0) return undefined;
+
+  const metadata = await sharp(resolvedPath).metadata();
+  const relativePath = path.relative(projectRoot, resolvedPath);
+  const extension = path.extname(relativePath);
+  const previewRelativePath = `${relativePath.slice(0, -extension.length)}.preview.webp`;
+  const previewDestinationPath = path.join(publicAssetRoot, previewRelativePath);
+  const { data: previewData, info: previewInfo } = await sharp(resolvedPath)
+    .resize({ width: 960, withoutEnlargement: true })
+    .webp({ effort: 4, quality: 84, smartSubsample: true })
+    .toBuffer({ resolveWithObject: true });
+  fs.mkdirSync(path.dirname(previewDestinationPath), { recursive: true });
+  fs.writeFileSync(previewDestinationPath, previewData);
+
+  return {
+    src: `book-assets/${encodePublicPath(previewRelativePath)}${suffix}`,
+    width: previewInfo.width,
+    height: previewInfo.height,
+    fullSrc: `${publicPath}${suffix}`,
+    fullWidth: metadata.width,
+    fullHeight: metadata.height,
+  };
+}
+
+async function mapWithConcurrency<T, R>(
+  values: readonly T[],
+  limit: number,
+  operation: (value: T) => Promise<R>,
+): Promise<R[]> {
+  const results = new Array<R>(values.length);
+  let nextIndex = 0;
+
+  async function worker(): Promise<void> {
+    while (nextIndex < values.length) {
+      const index = nextIndex;
+      nextIndex += 1;
+      results[index] = await operation(values[index]);
+    }
+  }
+
+  await Promise.all(Array.from({ length: Math.min(limit, values.length) }, () => worker()));
+  return results;
 }
 
 function firstMeaningfulParagraph(markdownText: string): string {
@@ -572,7 +633,7 @@ function sanitizeRenderedHtml(input: string): string {
   return sanitized.replace(/<p>\s*<\/p>/g, "");
 }
 
-function buildContent(): BookContent {
+async function buildContent(): Promise<BookContent> {
   const rootReadmePath = path.join(projectRoot, "README.md");
   const rootReadmeText = fs.readFileSync(rootReadmePath, "utf8");
   const chapterEntries = parseChapterIndex(rootReadmeText);
@@ -582,26 +643,36 @@ function buildContent(): BookContent {
   const chapterEntryByNumber = new Map(chapterEntries.map((entry) => [entry.number, entry]));
 
   fs.rmSync(publicAssetRoot, { force: true, recursive: true });
+  fs.rmSync(publicDocumentRoot, { force: true, recursive: true });
+  fs.mkdirSync(publicDocumentRoot, { recursive: true });
   configureMarkdownRenderer(fileToDocumentId);
 
-  const documents = sourceDocuments.map((sourceDocument) => {
+  const documents = await mapWithConcurrency(sourceDocuments, 4, async (sourceDocument) => {
     const markdownText = fs.readFileSync(sourceDocument.sourcePath, "utf8");
     const fallbackTitle = sourceDocument.kind === "book-overview" ? "System Architecture Book" : sourceDocument.relativePath;
     const title = firstHeading(markdownText, fallbackTitle);
     const wordCount = countWords(markdownText);
-    const coverImage = leadingCoverImage(markdownText, sourceDocument.sourcePath);
+    const coverImage = await leadingCoverImage(markdownText, sourceDocument.sourcePath);
     const renderedMarkdownText = stripLeadingDocumentChrome(markdownText);
     const renderEnvironment: RenderEnvironment = {
       sourcePath: sourceDocument.sourcePath,
       headings: [],
       headingCounts: new Map(),
       seenImages: new Set(),
-      coverImage,
+      coverImage: coverImage?.src,
     };
     const html = sanitizeRenderedHtml(markdown.render(renderedMarkdownText, renderEnvironment));
     const chapterEntry =
       sourceDocument.chapterNumber === undefined ? undefined : chapterEntryByNumber.get(sourceDocument.chapterNumber);
-    const plainText = stripMarkdown(markdownText);
+    const excerpt = firstMeaningfulParagraph(markdownText);
+    const documentContent: BookDocumentContent = { id: sourceDocument.id, html };
+    const documentContentPath = path.resolve(publicDocumentRoot, `${sourceDocument.id}.json`);
+
+    if (!isInside(publicDocumentRoot, documentContentPath)) {
+      throw new Error(`Refusing to write document content outside the public document root: ${sourceDocument.id}`);
+    }
+
+    fs.writeFileSync(documentContentPath, JSON.stringify(documentContent), "utf8");
 
     return {
       id: sourceDocument.id,
@@ -612,13 +683,21 @@ function buildContent(): BookContent {
       kind: sourceDocument.kind,
       sourcePath: sourceDocument.sourcePath,
       relativePath: sourceDocument.relativePath,
-      excerpt: firstMeaningfulParagraph(markdownText),
+      excerpt,
       readingMinutes: estimateReadingMinutes(wordCount),
       wordCount,
       headings: renderEnvironment.headings,
-      coverImage,
-      html,
-      searchText: normalizeSearchText(`${title} ${chapterEntry?.title ?? ""} ${plainText}`),
+      coverImage: coverImage?.src,
+      coverImageWidth: coverImage?.width,
+      coverImageHeight: coverImage?.height,
+      coverImageFull: coverImage?.fullSrc,
+      coverImageFullWidth: coverImage?.fullWidth,
+      coverImageFullHeight: coverImage?.fullHeight,
+      searchText: normalizeSearchText(
+        `${title} ${chapterEntry?.title ?? ""} ${sourceDocument.relativePath} ${excerpt} ${renderEnvironment.headings
+          .map((heading) => heading.title)
+          .join(" ")}`,
+      ),
     } satisfies BookDocument;
   });
 
@@ -676,15 +755,15 @@ function buildContent(): BookContent {
   };
 }
 
-function main(): void {
+async function main(): Promise<void> {
   fs.mkdirSync(publicRoot, { recursive: true });
-  const content = buildContent();
+  const content = await buildContent();
   const outputPath = path.join(publicRoot, "book-content.json");
-  fs.writeFileSync(outputPath, `${JSON.stringify(content, null, 2)}\n`, "utf8");
+  fs.writeFileSync(outputPath, JSON.stringify(content), "utf8");
 
   console.log(
     `Generated ${content.metrics.documentsTotal} documents across ${content.metrics.chaptersAvailable}/${content.metrics.chaptersTotal} chapters.`,
   );
 }
 
-main();
+await main();

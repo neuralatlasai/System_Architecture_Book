@@ -1,6 +1,6 @@
 # Observability, SLO, and Audit Contract
 
-![Figure: Observability SLO and audit proof graph](images/09-observability-slo-audit-proof-graph.png)
+![Figure: Observability SLO and audit proof graph](images/09-observability-slo-audit-proof-graph.webp)
 
 ## Abstract
 

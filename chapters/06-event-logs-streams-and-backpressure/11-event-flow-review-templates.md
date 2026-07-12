@@ -1,6 +1,6 @@
 # Event Flow Review Templates
 
-![Figure: Event flow review dossier](images/11-event-flow-review-dossier.png)
+![Figure: Event flow review dossier](images/11-event-flow-review-dossier.webp)
 
 ## Abstract
 

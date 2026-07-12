@@ -1,5 +1,7 @@
 # Serving Review Templates
 
+![Figure: Serving review dossier](images/11-serving-review-dossier.webp)
+
 ## Abstract
 
 This file assembles the chapter into its executable form: the dossier a team completes to put a serving deployment — buy-vs-run verdict to canary spine — in front of an architecture review, and the checklist the reviewer walks to approve it. The organizing principle is the chapter's root discipline made procedural: every serving claim must trace to arithmetic (which resource binds, per file 02's chain), every optimization must name the term it moves (TTFT or TPOT, bytes or FLOPs, for which class), and every technique that can touch outputs must carry its eval evidence — because this is the chapter where "faster" can silently mean "different answers," and the dossier's job is to make that impossibility structural. Evidence citations must satisfy file 10's stamp discipline: dated, serving-generation-stamped (model/engine/config/fleet/mix), open-loop-in-tokens where load-generated, and re-minted by the canary spine where the pipeline can carry them.

@@ -1,6 +1,6 @@
 # Fairness and Multi-Tenant Isolation
 
-![Figure: Fairness and multi-tenant isolation](images/06-fairness-multi-tenant-isolation.png)
+![Figure: Fairness and multi-tenant isolation](images/06-fairness-multi-tenant-isolation.webp)
 
 ## Abstract
 

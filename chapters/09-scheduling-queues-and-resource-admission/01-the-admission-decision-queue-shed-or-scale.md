@@ -1,6 +1,6 @@
 # The Admission Decision — Queue, Shed, or Scale
 
-![Figure: Admission decision, queue, shed, or scale](images/01-admission-decision-queue-shed-scale.png)
+![Figure: Admission decision, queue, shed, or scale](images/01-admission-decision-queue-shed-scale.webp)
 
 ## Abstract
 

@@ -1,10 +1,11 @@
 import fs from "node:fs";
 import path from "node:path";
-import type { BookContent, BookDocument } from "../src/types";
+import type { BookContent, BookDocument, BookDocumentContent } from "../src/types";
 
 const projectRoot = process.cwd();
 const publicRoot = path.join(projectRoot, "public");
 const contentPath = path.join(publicRoot, "book-content.json");
+const documentContentRoot = path.join(publicRoot, "book-documents");
 const imageSourcePattern = /<img[^>]+src="([^"]+)"/g;
 const markdownLinkPattern = /(?<!!)\[[^\]]*]\(([^)]+)\)/g;
 
@@ -29,8 +30,23 @@ function localAssetPath(assetUrl: string): string | undefined {
   return isInside(publicRoot, resolvedPath) ? resolvedPath : undefined;
 }
 
-function imageSources(document: BookDocument): string[] {
-  return [...document.html.matchAll(imageSourcePattern)].map((match) => match[1]);
+function imageSources(html: string): string[] {
+  return [...html.matchAll(imageSourcePattern)].map((match) => match[1]);
+}
+
+function readDocumentContent(document: BookDocument, errors: string[]): BookDocumentContent | undefined {
+  const contentFilePath = path.resolve(documentContentRoot, `${document.id}.json`);
+  if (!isInside(documentContentRoot, contentFilePath) || !fs.existsSync(contentFilePath)) {
+    errors.push(`${document.id}: generated document body is missing`);
+    return undefined;
+  }
+
+  const content = JSON.parse(fs.readFileSync(contentFilePath, "utf8")) as BookDocumentContent;
+  if (content.id !== document.id) {
+    errors.push(`${document.id}: generated document body has mismatched id '${content.id}'`);
+  }
+
+  return content;
 }
 
 function markdownDestination(rawDestination: string): string {
@@ -72,6 +88,7 @@ function verifyMarkdownLinks(document: BookDocument, errors: string[]): void {
 
 function verifyDocument(document: BookDocument, errors: string[]): void {
   verifyMarkdownLinks(document, errors);
+  const documentContent = readDocumentContent(document, errors);
 
   const seenHeadingIds = new Set<string>();
   for (const heading of document.headings) {
@@ -82,7 +99,7 @@ function verifyDocument(document: BookDocument, errors: string[]): void {
   }
 
   const seenImageSources = new Set<string>();
-  for (const source of imageSources(document)) {
+  for (const source of imageSources(documentContent?.html ?? "")) {
     if (source === document.coverImage) {
       errors.push(`${document.id}: cover image is repeated in body HTML`);
     }
@@ -102,6 +119,13 @@ function verifyDocument(document: BookDocument, errors: string[]): void {
     const coverPath = localAssetPath(document.coverImage);
     if (coverPath && !fs.existsSync(coverPath)) {
       errors.push(`${document.id}: cover image asset is missing at '${document.coverImage}'`);
+    }
+  }
+
+  if (document.coverImageFull) {
+    const fullCoverPath = localAssetPath(document.coverImageFull);
+    if (fullCoverPath && !fs.existsSync(fullCoverPath)) {
+      errors.push(`${document.id}: full-resolution cover image asset is missing at '${document.coverImageFull}'`);
     }
   }
 }

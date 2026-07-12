@@ -1,6 +1,6 @@
 # Chapter 01: Architectural Objective and System Boundary
 
-![Figure: Chapter 01 boundary contract stack](images/README-chapter-01-boundary-contract.png)
+![Figure: Chapter 01 boundary contract stack](images/README-chapter-01-boundary-contract.webp)
 
 ## Abstract
 

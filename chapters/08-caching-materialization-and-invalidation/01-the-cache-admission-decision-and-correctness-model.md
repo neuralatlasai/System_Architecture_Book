@@ -1,6 +1,6 @@
 # The Cache Admission Decision and Correctness Model
 
-![Figure: Cache admission decision and correctness model](images/01-cache-admission-correctness-model.png)
+![Figure: Cache admission decision and correctness model](images/01-cache-admission-correctness-model.webp)
 
 ## Abstract
 

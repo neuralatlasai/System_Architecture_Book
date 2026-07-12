@@ -1,6 +1,6 @@
 # Partitioning and Placement
 
-![Figure: Partitioning and placement](images/04-partitioning-placement.png)
+![Figure: Partitioning and placement](images/04-partitioning-placement.webp)
 
 ## Abstract
 

@@ -1,6 +1,6 @@
 # Eviction, Admission, and Memory Economics
 
-![Figure: Eviction, admission, and memory economics](images/07-eviction-admission-memory-economics.png)
+![Figure: Eviction, admission, and memory economics](images/07-eviction-admission-memory-economics.webp)
 
 ## Abstract
 

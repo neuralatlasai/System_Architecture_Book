@@ -1,6 +1,6 @@
 # Coordination: Locks, Leases, and Convergence
 
-![Figure: Coordination locks leases and convergence](images/04-coordination-locks-leases-convergence.png)
+![Figure: Coordination locks leases and convergence](images/04-coordination-locks-leases-convergence.webp)
 
 ## Abstract
 

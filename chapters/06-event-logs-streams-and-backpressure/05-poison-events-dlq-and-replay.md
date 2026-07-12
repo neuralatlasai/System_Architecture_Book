@@ -1,6 +1,6 @@
 # Poison Events, DLQ, and Replay
 
-![Figure: Poison events, DLQ, and replay](images/05-poison-events-dlq-replay.png)
+![Figure: Poison events, DLQ, and replay](images/05-poison-events-dlq-replay.webp)
 
 ## Abstract
 

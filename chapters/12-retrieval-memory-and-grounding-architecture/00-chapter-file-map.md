@@ -1,5 +1,7 @@
 # Chapter 12 File Map — Retrieval, Memory, and Grounding Architecture
 
+![Figure: Chapter 12 approval dependency graph](images/00-chapter-file-map-approval-graph.webp)
+
 ## Reading Order
 
 | Order | File | Owns |

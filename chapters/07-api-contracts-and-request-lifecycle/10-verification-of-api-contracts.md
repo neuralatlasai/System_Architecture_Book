@@ -1,6 +1,6 @@
 # Verification of API Contracts
 
-![Figure: Verification of API contracts](images/10-verification-api-contracts.png)
+![Figure: Verification of API contracts](images/10-verification-api-contracts.webp)
 
 ## Abstract
 

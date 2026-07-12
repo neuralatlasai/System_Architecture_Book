@@ -1,6 +1,6 @@
 # Chapter 10 — Inference Runtime and GPU Serving Architecture
 
-![Figure: Inference serving architecture overview](images/README-inference-serving-overview.png)
+![Figure: Inference serving architecture overview](images/README-inference-serving-overview.webp)
 
 ## Abstract
 

@@ -1,6 +1,6 @@
 # Recovery, Backup, and Replay
 
-![Figure: Recovery backup and replay](images/08-recovery-backup-replay.png)
+![Figure: Recovery backup and replay](images/08-recovery-backup-replay.webp)
 
 ## Abstract
 

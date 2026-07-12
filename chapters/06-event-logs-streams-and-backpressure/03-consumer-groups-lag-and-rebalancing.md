@@ -1,6 +1,6 @@
 # Consumer Groups, Lag, and Rebalancing
 
-![Figure: Consumer groups, lag, and rebalancing](images/03-consumer-groups-lag-rebalancing.png)
+![Figure: Consumer groups, lag, and rebalancing](images/03-consumer-groups-lag-rebalancing.webp)
 
 ## Abstract
 

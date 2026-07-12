@@ -1,6 +1,6 @@
 # Plane Separation in AI Serving and Agents
 
-![Figure: Plane separation in AI serving and agents](images/08-ai-serving-agents-plane-separation.png)
+![Figure: Plane separation in AI serving and agents](images/08-ai-serving-agents-plane-separation.webp)
 
 ## Abstract
 

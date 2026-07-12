@@ -1,6 +1,6 @@
 # Indexing and Write Amplification
 
-![Figure: Indexing and write amplification](images/03-indexing-write-amplification.png)
+![Figure: Indexing and write amplification](images/03-indexing-write-amplification.webp)
 
 ## Abstract
 

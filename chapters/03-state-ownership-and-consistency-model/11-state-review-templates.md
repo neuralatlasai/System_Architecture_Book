@@ -1,6 +1,6 @@
 # State Review Templates
 
-![Figure: State review dossier compiler](images/11-state-review-dossier.png)
+![Figure: State review dossier compiler](images/11-state-review-dossier.webp)
 
 ## Abstract
 

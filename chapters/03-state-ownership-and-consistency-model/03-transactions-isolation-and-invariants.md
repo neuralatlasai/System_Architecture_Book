@@ -1,6 +1,6 @@
 # Transactions, Isolation, and Invariants
 
-![Figure: Transactions isolation and invariants](images/03-transactions-isolation-invariants.png)
+![Figure: Transactions isolation and invariants](images/03-transactions-isolation-invariants.webp)
 
 ## Abstract
 

@@ -1,6 +1,6 @@
 # Plane Separation Review Templates
 
-![Figure: Plane separation review dossier compiler](images/10-plane-separation-review-dossier.png)
+![Figure: Plane separation review dossier compiler](images/10-plane-separation-review-dossier.webp)
 
 ## Abstract
 

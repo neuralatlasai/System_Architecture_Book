@@ -1,6 +1,6 @@
 # Idempotency and Safe Retries
 
-![Figure: Idempotency and safe retries](images/04-idempotency-safe-retries.png)
+![Figure: Idempotency and safe retries](images/04-idempotency-safe-retries.webp)
 
 ## Abstract
 

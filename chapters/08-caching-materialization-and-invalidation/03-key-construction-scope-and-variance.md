@@ -1,6 +1,6 @@
 # Key Construction, Scope, and Variance
 
-![Figure: Key construction, scope, and variance](images/03-key-construction-scope-variance.png)
+![Figure: Key construction, scope, and variance](images/03-key-construction-scope-variance.webp)
 
 ## Abstract
 

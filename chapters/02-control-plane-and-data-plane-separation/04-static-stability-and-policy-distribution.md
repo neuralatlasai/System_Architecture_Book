@@ -1,6 +1,6 @@
 # Static Stability and Policy Distribution
 
-![Figure: Static stability and policy distribution](images/04-static-stability-policy-distribution.png)
+![Figure: Static stability and policy distribution](images/04-static-stability-policy-distribution.webp)
 
 ## Abstract
 

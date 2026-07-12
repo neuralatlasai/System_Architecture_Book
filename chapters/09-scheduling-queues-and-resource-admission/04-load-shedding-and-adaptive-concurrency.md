@@ -1,6 +1,6 @@
 # Load Shedding and Adaptive Concurrency
 
-![Figure: Load shedding and adaptive concurrency](images/04-load-shedding-adaptive-concurrency.png)
+![Figure: Load shedding and adaptive concurrency](images/04-load-shedding-adaptive-concurrency.webp)
 
 ## Abstract
 

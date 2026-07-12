@@ -1,6 +1,6 @@
 # Verification of Distribution
 
-![Figure: Verification of distribution](images/09-verification-distribution.png)
+![Figure: Verification of distribution](images/09-verification-distribution.webp)
 
 ## Abstract
 

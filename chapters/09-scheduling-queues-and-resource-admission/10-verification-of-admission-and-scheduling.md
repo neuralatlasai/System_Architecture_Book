@@ -1,6 +1,6 @@
 # Verification of Admission and Scheduling
 
-![Figure: Verification of admission and scheduling](images/10-verification-admission-scheduling.png)
+![Figure: Verification of admission and scheduling](images/10-verification-admission-scheduling.webp)
 
 ## Abstract
 

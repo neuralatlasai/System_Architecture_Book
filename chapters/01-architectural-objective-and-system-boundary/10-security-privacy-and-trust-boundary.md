@@ -1,6 +1,6 @@
 # Security, Privacy, and Trust Boundary
 
-![Figure: Security privacy and trust boundary model](images/10-security-privacy-trust-boundary.png)
+![Figure: Security privacy and trust boundary model](images/10-security-privacy-trust-boundary.webp)
 
 ## Abstract
 

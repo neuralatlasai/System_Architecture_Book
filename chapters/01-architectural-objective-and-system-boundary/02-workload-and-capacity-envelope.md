@@ -1,6 +1,6 @@
 # Workload and Capacity Envelope
 
-![Figure: Workload vector to capacity envelope](images/02-workload-capacity-envelope.png)
+![Figure: Workload vector to capacity envelope](images/02-workload-capacity-envelope.webp)
 
 ## Abstract
 

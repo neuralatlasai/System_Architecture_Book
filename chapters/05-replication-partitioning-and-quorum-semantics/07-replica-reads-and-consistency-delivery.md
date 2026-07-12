@@ -1,6 +1,6 @@
 # Replica Reads and Consistency Delivery
 
-![Figure: Replica reads and consistency delivery](images/07-replica-reads-consistency-delivery.png)
+![Figure: Replica reads and consistency delivery](images/07-replica-reads-consistency-delivery.webp)
 
 ## Abstract
 

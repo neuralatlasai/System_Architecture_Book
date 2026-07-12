@@ -1,6 +1,6 @@
 # Analytical Paths and Columnar Storage
 
-![Figure: Analytical paths and columnar storage](images/06-analytical-paths-columnar-storage.png)
+![Figure: Analytical paths and columnar storage](images/06-analytical-paths-columnar-storage.webp)
 
 ## Abstract
 

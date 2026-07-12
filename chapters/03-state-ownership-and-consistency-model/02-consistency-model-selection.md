@@ -1,6 +1,6 @@
 # Consistency Model Selection
 
-![Figure: Consistency model selection](images/02-consistency-model-selection.png)
+![Figure: Consistency model selection](images/02-consistency-model-selection.webp)
 
 ## Abstract
 

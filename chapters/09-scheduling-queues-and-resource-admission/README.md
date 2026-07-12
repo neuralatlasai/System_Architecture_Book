@@ -1,6 +1,6 @@
 # Chapter 09 — Scheduling, Queues, and Resource Admission
 
-![Figure: Admission and scheduling overview](images/README-admission-scheduling-overview.png)
+![Figure: Admission and scheduling overview](images/README-admission-scheduling-overview.webp)
 
 ## Abstract
 

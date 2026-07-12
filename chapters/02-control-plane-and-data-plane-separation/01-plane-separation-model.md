@@ -1,6 +1,6 @@
 # Plane Separation Model
 
-![Figure: Plane separation model](images/01-plane-separation-model.png)
+![Figure: Plane separation model](images/01-plane-separation-model.webp)
 
 ## Abstract
 

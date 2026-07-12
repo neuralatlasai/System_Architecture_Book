@@ -1,6 +1,6 @@
 # Failure Modes and Degradation
 
-![Figure: Failure modes and degradation](images/08-failure-modes-degradation.png)
+![Figure: Failure modes and degradation](images/08-failure-modes-degradation.webp)
 
 ## Abstract
 

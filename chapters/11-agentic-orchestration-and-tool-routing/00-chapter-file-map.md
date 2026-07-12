@@ -1,5 +1,7 @@
 # Chapter 11 File Map — Agentic Orchestration and Tool Routing
 
+![Figure: Chapter 11 approval dependency graph](images/00-chapter-file-map-approval-graph.webp)
+
 ## Reading Order
 
 | Order | File | Owns |

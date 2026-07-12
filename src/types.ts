@@ -18,8 +18,17 @@ export interface BookDocument {
   readonly wordCount: number;
   readonly headings: BookHeading[];
   readonly coverImage?: string;
-  readonly html: string;
+  readonly coverImageWidth?: number;
+  readonly coverImageHeight?: number;
+  readonly coverImageFull?: string;
+  readonly coverImageFullWidth?: number;
+  readonly coverImageFullHeight?: number;
   readonly searchText: string;
+}
+
+export interface BookDocumentContent {
+  readonly id: string;
+  readonly html: string;
 }
 
 export interface BookChapter {

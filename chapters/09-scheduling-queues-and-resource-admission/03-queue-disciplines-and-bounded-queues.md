@@ -1,6 +1,6 @@
 # Queue Disciplines and Bounded Queues
 
-![Figure: Queue disciplines and bounded queues](images/03-queue-disciplines-bounded-queues.png)
+![Figure: Queue disciplines and bounded queues](images/03-queue-disciplines-bounded-queues.webp)
 
 ## Abstract
 
